@@ -1,0 +1,111 @@
+TCT_API: [
+    {
+        "type": "fallback",
+        "name": "fallback",
+        "inputs": []
+    },
+    {
+        "type": "function",
+        "name": "getCarOwner",
+        "inputs": [
+            {
+                "name": "_carNumber",
+                "type": "str"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "Address"
+            }
+        ],
+        "readonly": "0x1"
+    },
+    {
+        "type": "function",
+        "name": "getPersonName",
+        "inputs": [
+            {
+                "name": "_from",
+                "type": "Address"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "str"
+            }
+        ],
+        "readonly": "0x1"
+    },
+    {
+        "type": "function",
+        "name": "getRepairInfo",
+        "inputs": [
+            {
+                "name": "_carNumber",
+                "type": "str"
+            },
+            {
+                "name": "_carCount",
+                "type": "int"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "str"
+            }
+        ],
+        "readonly": "0x1"
+    },
+    {
+        "type": "function",
+        "name": "hello",
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "str"
+            }
+        ],
+        "readonly": "0x1"
+    },
+    {
+        "type": "function",
+        "name": "setCar",
+        "inputs": [
+            {
+                "name": "_carNumber",
+                "type": "str"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "type": "function",
+        "name": "setPersonName",
+        "inputs": [
+            {
+                "name": "_name",
+                "type": "str"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "type": "function",
+        "name": "setRepairInfo",
+        "inputs": [
+            {
+                "name": "_carNumber",
+                "type": "str"
+            },
+            {
+                "name": "_repairInfo",
+                "type": "int"
+            },
+            {
+                "name": "_repairStatus",
+                "type": "int"
+            }
+        ],
+        "outputs": []
+    }
+]
