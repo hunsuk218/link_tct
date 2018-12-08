@@ -73,7 +73,7 @@ class TCTDapp(IconScoreBase):
         return self._person_name[_addr]
 
     @external(readonly=True)
-    def getRepairCount(self, _carNumber) -> int:
+    def getRepairCount(self, _carNumber: str) -> int:
         return self._repair_count[_carNumber]
 
         
@@ -116,3 +116,4 @@ class TCTDapp(IconScoreBase):
             revert("It is only excuted from escrow!!")
         else:
             self._car_owner[_carNumber] = _to
+
