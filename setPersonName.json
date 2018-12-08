@@ -1,0 +1,24 @@
+{
+  "jsonrpc": "2.0",
+  "method": "icx_sendTransaction",
+  "params": {
+    "version": "0x3",
+    "from": "hxe7af5fcfd8dfc67530a01a0e403882687528dfcb",
+    "value": "0x0",
+    "stepLimit": "0x200000",
+    "nid": "0x3",
+    "timestamp": "0x573117f1d6568",
+    "nonce": "0x2",
+    "to": "cxb3584a58f76b5c7cb709aa96084d204bff54aa33",
+    "signature": "sig",
+    "dataType": "call",
+    "data": {
+	    "method": "setPersonName",
+	    "params": {
+		    "_name": "minjun"
+	    }
+    }
+  },
+    "id": 1
+}
+
