@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>iconex_connect_sample</title>
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/gh/icon-project/icon-sdk-js@latest/build/icon-sdk-js.min.js">
+    </script>
+    <script>
+         var iconService = window['icon-sdk-js']
+         icon_service = IconService(HTTPProvider("http://127.0.0.1:9000/api/v3"));
+         console.log( iconService.getBlock('latest'));
+    </script>
+</body>
+</html>
