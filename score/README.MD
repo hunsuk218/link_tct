@@ -2,7 +2,7 @@ tbears start ../ folder
 
 ../keysotres/keystore_test1 password : test1_Account
 
-tbears deploy TCT -k ../keystores/keystore_test1 -c ../config/tbears_cli_config.json
+tbears deploy [Project] -k ../keystores/keystore_test1 -c ../config/tbears_cli_config.json
  --> txnhash
 
 tbears txresult [txnhash]

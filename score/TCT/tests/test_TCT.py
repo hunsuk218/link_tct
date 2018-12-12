@@ -68,3 +68,6 @@ class TestTCTDapp(IconIntegrateTestBase):
 
         self.assertEqual("Hello", response)
 
+
+
+repairDataStr = json_dumps(repairData)

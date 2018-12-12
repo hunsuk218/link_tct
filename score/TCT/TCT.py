@@ -61,8 +61,11 @@ class TCTDapp(IconScoreBase):
         if self.isCar(_carNumber):
             revert("already car registed")
         else:
-            self._car_owner[_carNumber] = self.msg.sender
-            Logger.debug(f'set car')
+            if self.isPerson(self.msg.sender):
+                self._car_owner[_carNumber] = self.msg.sender
+                Logger.debug(f'set car')
+            else:
+                revert("regist person first")
     
     @external(readonly=True)
     def getCarOwner(self, _carNumber: str) -> Address:
@@ -78,7 +81,7 @@ class TCTDapp(IconScoreBase):
 
         
     @external
-    def setRepairInfo(self, _carNumber: str, _repairInfo: int, _repairStatus: int):
+    def setRepairInfo(self, _carNumber: str, _repairInfo: str, _repairStatus: str):
         if not self.isCar(_carNumber):
             revert("check car number OR regist car first")
 
@@ -89,12 +92,12 @@ class TCTDapp(IconScoreBase):
         count = self.getRepairCount(_carNumber)
         count += 1
         self._repair_count[_carNumber] = count
-        
+
         repairData = {
-            'FROM' : self.msg.sender,
+            'FROM' : self.msg.sender.__str__(),
             'REPAIRINFO' : _repairInfo,
             'REPAIRSTATUS' : _repairStatus,
-            'REPAIRTIME' : self.now
+            'REPAIRTIME' : self.now()
         }
         repairDataStr = json_dumps(repairData)
         
@@ -102,13 +105,14 @@ class TCTDapp(IconScoreBase):
         Logger.debug(f'set repair data!! good!')
     
 
-    @external(readonly=True)
-    def getRepairInfo(self, _carNumber:str, _carCount : int) -> str:
-        return self._repair_data[_carNumber][_carCount]
+    #@external(readonly=True)
+    #def getRepairInfo(self, _carNumber:str, _carCount : int) -> str:
+        #return self._repair_data[_carNumber][_carCount]
 
     @external(readonly=True)
-    def getRepairInfoDict(self, _carNumber:str, _carCount : int) -> dict:
-        return json_loads(self._repair_data[_carNumber][_carCount])
+    def getRepairInfo(self, _carNumber:str, _carCount : int) -> dict:
+        repairData = json_loads(self._repair_data[_carNumber][_carCount]) 
+        return repairData
 
     @external
     def ownerChange(self, _from : Address, _to : Address, _carNumber : str):
