@@ -110,9 +110,13 @@ class TCTDapp(IconScoreBase):
         #return self._repair_data[_carNumber][_carCount]
 
     @external(readonly=True)
-    def getRepairInfo(self, _carNumber:str, _carCount : int) -> dict:
-        repairData = json_loads(self._repair_data[_carNumber][_carCount]) 
-        return repairData
+    def getRepairInfo(self, _carNumber:str, _carCount : int) -> dict: 
+        return json_loads(self._repair_data[_carNumber][_carCount])
+
+    @external(readonly=True)
+    def getRepairInfoStr(self, _carNumber:str, _carCount : int) -> str: 
+        return self._repair_data[_carNumber][_carCount]
+    
 
     @external
     def ownerChange(self, _from : Address, _to : Address, _carNumber : str):
@@ -120,4 +124,3 @@ class TCTDapp(IconScoreBase):
             revert("It is only excuted from escrow!!")
         else:
             self._car_owner[_carNumber] = _to
-

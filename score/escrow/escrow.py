@@ -27,7 +27,6 @@ class TokenInterface(InterfaceScore):
         pass
 
 
-
 class TCTescrow(IconScoreBase):
     _ESCROW_DATA = '_escrow_data'
     _ESCROW_COUNT = '_escrow_count'
@@ -46,11 +45,6 @@ class TCTescrow(IconScoreBase):
 
     def on_update(self) -> None:
         super().on_update()
-    
-    @external(readonly=True)
-    def hello(self) -> str:
-        Logger.debug(f'Hello, world!', TAG)
-        return "Hello"
 
     def isOwner(self) -> bool:
         if self.msg.sender != self.owner:
@@ -83,12 +77,12 @@ class TCTescrow(IconScoreBase):
         escrowData = {
             "CARNUMBER" : _carNumber,
             "PRICE" : _price,
-            "SELLER" : self.msg.sender,
-            "BUYER" : _buyer,
+            "SELLER" : self.msg.sender.__str__(),
+            "BUYER" : _buyer.__str__(),
             "DEPOSITED" : False,
             "BUYERAPPROVE" : False,
             "SELLERAPPROVE" : False,
-            "START" : self.now,
+            "START" : self.now(),
             "lived" : True
         }
 
@@ -98,7 +92,14 @@ class TCTescrow(IconScoreBase):
         self._escrow_count.set(escrowCount)
         return escrowCount
 
-    
+    @external(readonly=True)
+    def getEscrowStr(self, _orderNumber : int) -> str:
+        return self._escrow_data[_orderNumber]
+
+    @external(readonly=True)
+    def getEscrow(self, _orderNumber : int) -> dict:
+        return json_loads(self._escrow_data[_orderNumber])
+
     @external 
     def deposit(self, _orderNumber : int):
         escrowData = json_loads(self._escrow_data[_orderNumber])
