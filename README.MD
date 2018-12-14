@@ -10,3 +10,11 @@ nid : 0x3
 
 wallet add -> keystores/key~
 
+getRepairInfoStr --> str return
+
+getRepairInfo --> dic, json return
+
+getEscrowStr --> str return
+
+getEscrow --> dic, json return
+
