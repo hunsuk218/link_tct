@@ -1,126 +1,92 @@
 from iconservice import *
+from .basic_token import BasicToken
 
-TAG = 'SampleToken'
+import os as iconservice
 
-
-# An interface of ICON Token Standard, IRC-2
-class TokenStandard(ABC):
-    @abstractmethod
-    def name(self) -> str:
-        pass
-
-    @abstractmethod
-    def symbol(self) -> str:
-        pass
-
-    @abstractmethod
-    def decimals(self) -> int:
-        pass
-
-    @abstractmethod
-    def totalSupply(self) -> int:
-        pass
-
-    @abstractmethod
-    def balanceOf(self, _owner: Address) -> int:
-        pass
-
-    @abstractmethod
-    def transfer(self, _to: Address, _value: int, _data: bytes = None):
-        pass
-
-
-# An interface of tokenFallback.
-# Receiving SCORE that has implemented this interface can handle
-# the receiving or further routine.
-class TokenFallbackInterface(InterfaceScore):
-    @interface
-    def tokenFallback(self, _from: Address, _value: int, _data: bytes):
-        pass
-
-
-class SampleToken(IconScoreBase, TokenStandard):
-
-    _BALANCES = 'balances'
-    _TOTAL_SUPPLY = 'total_supply'
-    _DECIMALS = 'decimals'
+class StandardToken(BasicToken):
+    """
+    Implementation of the basic standard token.
+    """
+    __DBKEY_ALLOWED = 'allowed'
 
     @eventlog(indexed=3)
-    def Transfer(self, _from: Address, _to: Address, _value: int, _data: bytes):
+    def Approval(self, owner: Address, spender: Address, value: int):
         pass
 
     def __init__(self, db: IconScoreDatabase) -> None:
         super().__init__(db)
-        self._total_supply = VarDB(self._TOTAL_SUPPLY, db, value_type=int)
-        self._decimals = VarDB(self._DECIMALS, db, value_type=int)
-        self._balances = DictDB(self._BALANCES, db, value_type=int)
-
-    #def on_install(self, _initialSupply: int, _decimals: int) -> None:
-    def on_install(self) -> None:
-        super().on_install()
-
-        _initialSupply = 10000000
-        _decimals = 2
-
-        if _initialSupply < 0:
-            revert("Initial supply cannot be less than zero")
-
-        if _decimals < 0:
-            revert("Decimals cannot be less than zero")
-
-        total_supply = _initialSupply * 10 ** _decimals
-        Logger.debug(f'on_install: total_supply={total_supply}', TAG)
-
-        self._total_supply.set(total_supply)
-        self._decimals.set(_decimals)
-        self._balances[self.msg.sender] = total_supply
-
-    def on_update(self) -> None:
-        super().on_update()
-
-    @external(readonly=True)
-    def name(self) -> str:
-        return "SampleToken"
-
-    @external(readonly=True)
-    def symbol(self) -> str:
-        return "ST"
-
-    @external(readonly=True)
-    def decimals(self) -> int:
-        return self._decimals.get()
-
-    @external(readonly=True)
-    def totalSupply(self) -> int:
-        return self._total_supply.get()
-
-    @external(readonly=True)
-    def balanceOf(self, _owner: Address) -> int:
-        return self._balances[_owner]
+        self._allowed = DictDB(self.__DBKEY_ALLOWED, db, value_type=int, depth=2)
 
     @external
-    def transfer(self, _to: Address, _value: int, _data: bytes = None):
-        if _data is None:
-            _data = b'None'
-        self._transfer(self.msg.sender, _to, _value, _data)
+    def approve(self, spender: Address, value: int) -> bool:
+        """
+        Approve the passed address to spend the specified amount of tokens on behalf of msg.sender
+        :param spender:
+        :param value:
+        :return:
+        """
+        self._allowed[self.msg.sender][spender] = value
 
-    def _transfer(self, _from: Address, _to: Address, _value: int, _data: bytes):
+        self.Approval(self.msg.sender, spender, value)
+        Logger.debug(f"approved {self.msg.sender},{spender} = {value}")
+        return True
 
-        # Checks the sending value and balance.
-        if _value < 0:
-            revert("Transferring value cannot be less than zero")
-        if self._balances[_from] < _value:
-            revert("Out of balance")
+    @external(readonly=True)
+    def allowance(self, owner: Address, spender: Address) -> int:
+        return self._allowed[owner][spender]
 
-        self._balances[_from] = self._balances[_from] - _value
-        self._balances[_to] = self._balances[_to] + _value
+    @external
+    def increaseApproval(self, spender: Address, value: int) -> bool:
+        """
+        Increase the amount of tokens that an owner allowed to a spender
+        :param spender:
+        :param value:
+        :return:
+        """
+        self._allowed[self.msg.sender][spender] = self._allowed[self.msg.sender][spender] + value
 
-        if _to.is_contract:
-            # If the recipient is SCORE,
-            #   then calls `tokenFallback` to hand over control.
-            recipient_score = self.create_interface_score(_to, TokenFallbackInterface)
-            recipient_score.tokenFallback(_from, _value, _data)
+        self.Approval(self.msg.sender, spender, self._allowed[self.msg.sender][spender])
+        Logger.debug(f"increase approval {self.msg.sender},{spender} += {value} "
+                     f"=> {self._allowed[self.msg.sender][spender]}")
+        return True
 
-        # Emits an event log `Transfer`
-        self.Transfer(_from, _to, _value, _data)
-        Logger.debug(f'Transfer({_from}, {_to}, {_value}, {_data})', TAG)
+    @external
+    def decreaseApproval(self, spender: Address, value: int) -> bool:
+        """
+        Decrease the amount of tokens that an owner allowed to a spender.
+        :param spender:
+        :param value:
+        :return:
+        """
+        old_value = self._allowed[self.msg.sender][spender]
+        self._allowed[self.msg.sender][spender] = max(0, old_value - value)
+
+        self.Approval(self.msg.sender, spender, self._allowed[self.msg.sender][spender])
+        Logger.debug(f"decrease approval {self.msg.sender},{spender} -= {value} "
+                     f"=> {self._allowed[self.msg.sender][spender]}")
+        return True
+
+    @external
+    def transferFrom(self, fromAddr: Address, toAddr: Address, value: int) -> bool:
+        """
+        Transfer tokens from one address to another
+        :param fromAddr: address The address which you want to send tokens from
+        :param toAddr: address The address whitch you want to transfer to
+        :param value: int the amount of tokens to be transferred
+        :return:
+        """
+        if self.balanceOf(fromAddr) < value:
+            self.revert(f"User balance is not enough.")
+
+        if self._allowed[fromAddr][self.msg.sender] < value:
+            self.revert("User doesn't have allowed value.")
+
+        self._balances[fromAddr] = self._balances[fromAddr] - value
+        self._balances[toAddr] = self._balances[toAddr] + value
+        self._allowed[fromAddr][self.msg.sender] = self._allowed[fromAddr][self.msg.sender] - value
+
+        self.Transfer(fromAddr, toAddr, value, 'None')
+        Logger.debug(f"transfer_from [after] from : {self.balanceOf(fromAddr)}, to {self.balanceOf(toAddr)}, ",
+                     f"allowed : {self.allowance(fromAddr, self.msg.sender)}")
+
+        return True

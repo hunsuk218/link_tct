@@ -23,7 +23,7 @@ class TokenInterface(InterfaceScore):
         pass
     
     @interface
-    def _transfer(self,  _from: Address, _to: Address, _value: int, _data: bytes):
+    def transferFrom(self, fromAddr: Address, toAddr: Address, value: int) -> bool:
         pass
 
 
@@ -63,10 +63,23 @@ class TCTescrow(IconScoreBase):
         if self.isOwner():
             self._tctdapp_addr.set(_addr)
 
+    @external(readonly=True)
+    def getTokenAddr(self) -> Address:
+        return self._token_addr.get()
+    
+    @external(readonly=True)
+    def getTCTAddr(self) -> Address:
+        return self._tctdapp_addr.get()
+    
+    @external
+    def tokenFallback(self, _from: Address, _value: int, _data: bytes):
+        if self.msg.sender != self._token_addr.get():
+            revert("Unknown token address")
+
     @external
     def createEscrow(self, _carNumber: str, _price: int, _buyer: Address) -> int:
         tctDapp = self.create_interface_score(self._tctdapp_addr.get(), tctDappInterface)
-        if self.msg.sender == tctDapp.getCarOwner(_carNumber):
+        if self.msg.sender != tctDapp.getCarOwner(_carNumber):
             revert("only car owner can sell car")
         if tctDapp.getPersonName(self.msg.sender) == "":
             revert("buyer is not registed")
@@ -105,38 +118,37 @@ class TCTescrow(IconScoreBase):
         escrowData = json_loads(self._escrow_data[_orderNumber])
         if escrowData["DEPOSITED"] == True:
             revert("already DEPOSITED")
-        if escrowData["BUYER"] != self.msg.sender:
-            revert("you are not buyer")
+        if Address.from_string(escrowData["BUYER"]) != self.msg.sender:
+            revert("is not buyer")
 
-        data = b'called from escrow'
         token_score = self.create_interface_score(self._token_addr.get(), TokenInterface)
-        token_score._transfer(self.msg.sender,self.address ,escrowData["PRICE"], data)
-
+        token_score.transferFrom(self.msg.sender,self.address ,escrowData["PRICE"])
+        
         escrowData["DEPOSITED"] = True
         self._escrow_data[_orderNumber] = json_dumps(escrowData)
 
 
     @external
-    def Approve(self, _orderNumber : int):
+    def approveEscrow(self, _orderNumber : int):
         escrowData = json_loads(self._escrow_data[_orderNumber])
-        if self.msg.sender == escrowData["SELLER"] or self.msg.sender == escrowData["BUYER"]:
+        
+        if self.msg.sender != Address.from_string(escrowData["SELLER"]) and self.msg.sender != Address.from_string(escrowData["BUYER"]):
             revert("you are not buyer or seller")
 
-        if self.msg.sender == escrowData["BUYER"] and escrowData["DEPOSITED"] == True:
-            escrowData["SELLERAPPROVE"] = True
-        
-        if self.msg.sender == escrowData["BUYERAPPROVE"]:
+        if self.msg.sender == Address.from_string(escrowData["BUYER"]) and escrowData["DEPOSITED"] == True:
             escrowData["BUYERAPPROVE"] = True
+        
+        if self.msg.sender == Address.from_string(escrowData["SELLER"]):
+            escrowData["SELLERAPPROVE"] = True
         
         if escrowData["SELLERAPPROVE"] and escrowData["BUYERAPPROVE"]:
             #token transfer to Seller
-            data = b'called from escrow'
             token_score = self.create_interface_score(self._token_addr.get(), TokenInterface)
-            token_score.transfer(escrowData["SELLER"],escrowData["PRICE"],data)
+            token_score.transfer(Address.from_string(escrowData["SELLER"]),escrowData["PRICE"])
 
             #owner change seller to buyer
             tctDapp = self.create_interface_score(self._tctdapp_addr.get(), tctDappInterface)
-            tctDapp.ownerChange(escrowData["SELLER"], escrowData["BUYER"], escrowData["CARNUMBER"])
+            tctDapp.ownerChange(Address.from_string(escrowData["SELLER"]), Address.from_string(escrowData["BUYER"]), escrowData["CARNUMBER"])
 
         self._escrow_data[_orderNumber] = json_dumps(escrowData)
 

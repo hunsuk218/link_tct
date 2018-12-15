@@ -48,6 +48,10 @@ class TCTDapp(IconScoreBase):
         
         self._escrow_addr.set(_addr)
 
+    @external(readonly=True)
+    def getEscrowAddr(self) -> Address:
+        return self._escrow_addr.get()
+    
     @external
     def setPersonName(self, _name: str):
         if self.isPerson(self.msg.sender):
