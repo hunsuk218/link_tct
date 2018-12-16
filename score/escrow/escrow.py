@@ -8,10 +8,6 @@ class tctDappInterface(InterfaceScore):
         pass
 
     @interface
-    def getPersonName(self, _addr:Address) -> str:
-        pass
-
-    @interface
     def ownerChange(self, _from : Address, _to : Address, _carNumber : str):
         pass
 
@@ -81,8 +77,6 @@ class TCTescrow(IconScoreBase):
         tctDapp = self.create_interface_score(self._tctdapp_addr.get(), tctDappInterface)
         if self.msg.sender != tctDapp.getCarOwner(_carNumber):
             revert("only car owner can sell car")
-        if tctDapp.getPersonName(self.msg.sender) == "":
-            revert("buyer is not registed")
         
         escrowCount = self._escrow_count.get()
         escrowCount += 1
@@ -96,7 +90,7 @@ class TCTescrow(IconScoreBase):
             "BUYERAPPROVE" : False,
             "SELLERAPPROVE" : False,
             "START" : self.now(),
-            "lived" : True
+            "LIVED" : True
         }
 
         escrowDataStr = json_dumps(escrowData)
@@ -145,10 +139,11 @@ class TCTescrow(IconScoreBase):
             #token transfer to Seller
             token_score = self.create_interface_score(self._token_addr.get(), TokenInterface)
             token_score.transfer(Address.from_string(escrowData["SELLER"]),escrowData["PRICE"])
-
+            
             #owner change seller to buyer
             tctDapp = self.create_interface_score(self._tctdapp_addr.get(), tctDappInterface)
             tctDapp.ownerChange(Address.from_string(escrowData["SELLER"]), Address.from_string(escrowData["BUYER"]), escrowData["CARNUMBER"])
-
+            
+            escrowData["LIVED"] = False
+        
         self._escrow_data[_orderNumber] = json_dumps(escrowData)
-

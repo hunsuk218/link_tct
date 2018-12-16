@@ -3,7 +3,6 @@ from iconservice import *
 TAG = 'TCTDapp'
 
 class TCTDapp(IconScoreBase):
-    _PERSON_NAME = '_person_name'
     _CAR_OWNER = '_car_owner'
     _REPAIR_COUNT = '_repair_count'
     _REPAIR_DATA = '_repiar_data'
@@ -12,7 +11,6 @@ class TCTDapp(IconScoreBase):
     def __init__(self, db: IconScoreDatabase) -> None:
         super().__init__(db)
 
-        self._person_name = DictDB(self._PERSON_NAME, db, value_type=str)       #person name
         self._car_owner = DictDB(self._CAR_OWNER, db, value_type=Address)       #car Owner
         self._repair_count = DictDB(self._REPAIR_COUNT, db, value_type=int)     #count
         self._repair_data = DictDB(self._REPAIR_DATA, db, value_type=str, depth=2)       #repiar Data
@@ -29,12 +27,6 @@ class TCTDapp(IconScoreBase):
     def on_update(self) -> None:
         super().on_update()
     
-    def isPerson(self, _from:Address) -> bool:
-        if self._person_name[_from] == "":
-            return False
-        else:
-            return True
-
     def isCar(self, _carNumber: str) -> bool:
         if self._car_owner[_carNumber] == None:
             return False
@@ -51,33 +43,18 @@ class TCTDapp(IconScoreBase):
     @external(readonly=True)
     def getEscrowAddr(self) -> Address:
         return self._escrow_addr.get()
-    
-    @external
-    def setPersonName(self, _name: str):
-        if self.isPerson(self.msg.sender):
-            revert("already person registed")
-        else:
-            self._person_name[self.msg.sender] = _name
-            Logger.debug(f'Set Person')
-            
+               
     @external
     def setCar(self, _carNumber: str):
         if self.isCar(_carNumber):
             revert("already car registed")
         else:
-            if self.isPerson(self.msg.sender):
-                self._car_owner[_carNumber] = self.msg.sender
-                Logger.debug(f'set car')
-            else:
-                revert("regist person first")
-    
+            self._car_owner[_carNumber] = self.msg.sender
+            
     @external(readonly=True)
     def getCarOwner(self, _carNumber: str) -> Address:
         return self._car_owner[_carNumber]
     
-    @external(readonly=True)
-    def getPersonName(self, _addr :Address) -> str:
-        return self._person_name[_addr]
 
     @external(readonly=True)
     def getRepairCount(self, _carNumber: str) -> int:
@@ -88,10 +65,7 @@ class TCTDapp(IconScoreBase):
     def setRepairInfo(self, _carNumber: str, _repairInfo: str, _repairStatus: str):
         if not self.isCar(_carNumber):
             revert("check car number OR regist car first")
-
-        if not self.isPerson(self.msg.sender):
-            revert("regist first")
-        
+    
         count = 0
         count = self.getRepairCount(_carNumber)
         count += 1
