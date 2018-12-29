@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>BLOCKCAR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <!-- css -->
+    <link href="stylesheets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="stylesheets/css/fancybox/jquery.fancybox.css" rel="stylesheet">
+    <link href="stylesheets/css/jcarousel.css" rel="stylesheet" />
+    <link href="stylesheets/css/flexslider.css" rel="stylesheet" />
+    <link href="stylesheets/css/style.css" rel="stylesheet" />
+
+    <!-- Theme skin -->
+    <link href="stylesheets/skins/default.css" rel="stylesheet" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        p{
+        display:none;
+    }
+    </style>
+
+</head>
+
+
+
+<body>
+    <div id="wrapper">
+        <!-- start header -->
+        <header>
+            <div class="navbar navbar-default navbar-static-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="/"><span>B</span>lockcar</a>
+                    </div>
+
+
+                    <div class="navbar-collapse collapse ">
+                        <table align="right">
+                            <tr>
+                                <td height="20"> </td>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td width="100"><a href="#"><span class="fa fa-address-card-o"></span> 계정 주소 : </a></td>
+                                <td width="330"><span id="contractAddress">
+                                        <%= contractaddr %></span></td>
+                                <td width="200" align="right"><a href="#"><span class="fa fa-gg-circle"></span> 보유 토큰 : </a>&nbsp;&nbsp;&nbsp;<span id="TCTNum"></span></td>
+                                <td width="50"><a href="#">&nbsp;TCT</a></td>
+
+                            </tr>
+                        </table>
+                    </div>
+
+
+                    <form action='/mypage' method="POST" name='addrForm'>
+                        <input type="hidden" id="accountaddr" name="accountaddr" value="">
+                    </form>
+
+
+                    <form action='/beforesellcar' method="POST" name='addrForm1'>
+                        <input type="hidden" id="accountaddr" name="accountaddr" value="">
+                    </form>
+
+
+                    <div class="navbar-collapse collapse ">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="/">Home</a></li>
+                            <li><a href="/enrollcar">차대번호 등록</a></li>
+                            <li><a href="/buycar">차량 구입</a></li>
+                            <li><a href="#" onclick="javascript:document.addrForm1.submit();">차량 판매</a></li>
+                            <li><a href="/repair">수리이력 등록</a></li>
+                            <li><a href="/searchRepairInfo">수리이력 조회</a></li>
+                            <li><a href="#" onclick="javascript:document.addrForm.submit();">나의 정보</a></li>
+
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </header>
+        <!-- end header -->
+        <section id="inner-headline">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="breadcrumb">
+                            <li><a href="#"><i class="fa fa-home"></i></a><i class="icon-angle-right"></i></li>
+                            <li><a href="#">MY PAGE</a><i class="icon-angle-right"></i></li>
+                            <li class="active">BUY DETAILS</li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="content">
+            <div class="container">
+
+
+                <table border="0" class="table table-hover">
+
+                    <tbody>
+
+                        <center>
+                            <h4>판매자 정보</h4>
+                        </center>
+                        <tr>
+                            <td class="text-center">판매자 주소</td>
+                            <td class="text-center">
+                                <%= accountaddr %>
+                            </td>
+
+
+                        </tr>
+
+
+                        <tr>
+                            <td class="text-center">차량 판매가격</td>
+                            <td class="text-center"><span style="color:red"><b>
+                                <%= price %> TCC</b></span></td>
+
+                        </tr>
+                        <tr>
+                            <td class="text-center">거래 상황</td>
+                            <td class="text-center">
+                                <%= status %>
+                            </td>
+
+
+
+                        </tr>
+                        <tr>
+                            <td class="text-center">입금 유무</td>
+                            <td class="text-center"><span id="deposit_is">입금 대기</span></td>
+
+                        </tr>
+                        <tr>
+                            <td class="text-center">판매자 승인</td>
+                            <td class="text-center"><span id="buyer_approve_check">미승인</span></td>
+
+
+                        </tr>
+                        <tr>
+                            <td class="text-center">구매자 승인</td>
+                            <td class="text-center"><span id="seller_approve_check">미승인</span></td>
+
+
+                        </tr>
+
+                    </tbody>
+                </table>
+
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="solidline">
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th colspan=6 class="text-center">자동차 정보</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        <tr>
+                            <td class="text-center">브랜드</td>
+                            <td class="text-center">
+                                <%=brand%>
+                            </td>
+                            <td class="text-center">국적</td>
+                            <td class="text-center">
+                                <%=nation%>
+                            </td>
+                            <td class="text-center">차량분류</td>
+                            <td class="text-center">
+                                <%=cartype%>
+                            </td>
+
+
+                        </tr>
+                        <tr>
+                            <td class="text-center">차종</td>
+                            <td class="text-center">
+                                <%=model%>
+                            </td>
+                            <td class="text-center">세부차종</td>
+                            <td class="text-center">
+                                <%=detailmodel%>
+                            </td>
+                            <td class="text-center">차제향상</td>
+                            <td class="text-center">
+                                <%=carbody%>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="text-center">안전장치</td>
+                            <td class="text-center">
+                                <%=safety%>
+                            </td>
+                            <td class="text-center">엔진구분</td>
+                            <td class="text-center">
+                                <%=engine%>
+                            </td>
+                            <td class="text-center">확인란</td>
+                            <td class="text-center">
+                                <%=checkbox%>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="text-center">제작년도</td>
+                            <td class="text-center">
+                                <%=year%>
+                            </td>
+                            <td class="text-center">생산공장</td>
+                            <td class="text-center">
+                                <%=factory%>
+                            </td>
+                            <td class="text-center">인증차량</td>
+                            <td class="text-center">
+                                O
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="text-center">차대번호</td>
+                            <td class="text-center">
+                                <%=wholenumber%>
+                            </td>
+                            <td class="text-center">구매번호</td>
+                            <td class="text-center">
+                                <%=escrownumber%>
+                            </td>
+                            <td class="text-center">생산일련번호</td>
+                            <td class="text-center">
+                                <%=producenumber%>
+                            </td>
+                            <input type="hidden" id="count" value=<%=escrownumber%>>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <script>
+                    function formChk_buy(){
+                                                                                
+                        deposit();
+                                                                                        return true;
+                                                                            }
+                                                                            </script>
+
+
+                <form action="/depositloading" method="post" onSubmit="formChk_buy(); return false" name="joinForm33" id="joinForm33">
+                    <input type="hidden" id="count_" name="count" value=<%=escrownumber%>>
+
+                    <center><input type="hidden" id="deposite_price" value=<%=price%> >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-theme btn-rounded mb-11">입금 하기</button></center>
+                </form>
+                <br>
+                <br>
+
+                <script>
+                    function formChkba(){
+                        if (confirm("구매를 확정하시겠습니까?")) {
+                            buyerapproveEscrow();
+                                    alert("최종승인이 완료되었습니다.");
+                                    document.buyform.submit(); 
+                                            }                                                  
+                                                                                    return true;
+                                                                        }
+                                                                        </script>
+
+
+                <form action="/buydetail/buyerapprove" method="post" onSubmit="formChkba(); return false" name="joinFormbb" id="joinFormbb">
+       
+                    <input type="hidden" id="wholenumber_" name="wholenumber" value=<%=wholenumber %>>
+                        <input type="hidden" id="buyeraddr_" name="buyeraddr" value=<%=contractaddr %>>
+                        <input type="hidden" id="count" name="count" value=<%=escrownumber%>>
+                    <center><button type="submit" class="btn btn-danger btn-rounded mb-11" id="add">최종 승인</button></center>
+                </form>
+
+                <br>
+                <br>
+                <br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="solidline">
+                        </div>
+                    </div>
+                </div>
+                <!-- end divider -->
+                <!-- Descriptions -->
+
+
+
+            </div>
+        </section>
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </footer>
+    </div>
+    <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
+    <!-- javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="javascripts/jquery.js"></script>
+    <script src="javascripts/jquery.easing.1.3.js"></script>
+    <script src="javascripts/bootstrap.min.js"></script>
+    <script src="javascripts/jquery.fancybox.pack.js"></script>
+    <script src="javascripts/jquery.fancybox-media.js"></script>
+    <script src="javascripts/google-code-prettify/prettify.js"></script>
+    <script src="javascripts/portfolio/jquery.quicksand.js"></script>
+    <script src="javascripts/portfolio/setting.js"></script>
+    <script src="javascripts/jquery.flexslider.js"></script>
+    <script src="javascripts/animate.js"></script>
+    <script src="javascripts/custom.js"></script>
+    <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/gh/icon-project/icon-sdk-js/build/icon-sdk-js.min.js"></script>
+    <script src="javascripts/utf8.js"></script>
+    <script>
+        var iconService = window['icon-sdk-js'];
+        var IconAmount = iconService.IconAmount;
+        var IconConverter = iconService.IconConverter;
+        var IconBuilder = iconService.IconBuilder;
+
+        var contractAddress = document.getElementById("contractAddress");
+        var enrollcar_enroll = document.getElementById("enrollcar_enroll");
+
+
+        window.addEventListener("ICONEX_RELAY_RESPONSE", eventHandler, false);
+        // type and payload are in event.detail
+        function eventHandler(event) {
+            var type = event.detail.type;
+            var payload = event.detail.payload;
+            switch (type) {
+                case "RESPONSE_HAS_ACCOUNT":
+
+                    break;
+
+
+                case "RESPONSE_ADDRESS":
+                    fromAddress = payload;
+                    isRegist.innerHTML = "HELLO"
+                    contractAddress.innerHTML = payload;
+                    break;
+
+                case "RESPONSE_JSON-RPC":
+                    console.log(payload);
+                    if("<%= status %>" =="거래중"||"<%= status %>" =="거래완료"){
+                    if (payload.result.DEPOSITED == '0x1') {
+                        document.getElementById("deposit_is").innerHTML = "입금완료";
+                    }
+                    if (payload.result.SELLERAPPROVE == '0x1') {
+                        document.getElementById("buyer_approve_check").innerHTML = "승인완료";
+                    }
+                    if (payload.result.BUYERAPPROVE == '0x1') {
+                        document.getElementById("seller_approve_check").innerHTML = "승인완료";
+                    }
+                }
+                    var HexToDecimal = parseInt(payload.result.toString(10), 16);
+document.getElementById("TCTNum").innerHTML = HexToDecimal;
+                    break;
+                case "CANCEL_JSON-RPC":
+                    break;
+
+
+
+                default:
+            }
+
+        }
+        // Register onclick event to the button and dispatch a new CustomEvent ICONEX_RELAY_REQUEST
+
+
+        function deposit() {
+            var callTransactionBuilder = new IconBuilder.CallTransactionBuilder;
+            var callTransactionData = callTransactionBuilder
+                .from("<%=contractaddr%>")
+                .to("cx7060d4aed45cd66993f75edb2f6c93d404dd239b")
+                .nid(IconConverter.toBigNumber(3))
+                .timestamp((new Date()).getTime() * 1000)
+                .stepLimit(IconConverter.toBigNumber(100000000))
+                .version(IconConverter.toBigNumber(3))
+                .method('deposit')
+                .params({
+
+                    "_orderNumber": "0x" + <%= escrownumber %>
+                })
+                .build();
+
+            scoredata = JSON.stringify({
+                "jsonrpc": "2.0",
+                "method": "icx_sendTransaction",
+                "params": IconConverter.toRawTransaction(callTransactionData),
+                "id": 50889
+            });
+            var parsed = JSON.parse(scoredata);
+            console.log(parsed);
+
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: 'REQUEST_JSON-RPC',
+                    payload: parsed
+                }
+            }));
+        
+        }
+
+        function buyerapproveEscrow() {
+            var callTransactionBuilder = new IconBuilder.CallTransactionBuilder;
+            var callTransactionData = callTransactionBuilder
+                .from("<%=contractaddr%>")
+                .to("cx7060d4aed45cd66993f75edb2f6c93d404dd239b")
+                .nid(IconConverter.toBigNumber(3))
+                .timestamp((new Date()).getTime() * 1000)
+                .stepLimit(IconConverter.toBigNumber(100000000))
+                .version(IconConverter.toBigNumber(3))
+                .method('approveEscrow')
+                .params({
+                    "_orderNumber": "0x" + <%= escrownumber %>
+                })
+                .build();
+
+            scoredata = JSON.stringify({
+                "jsonrpc": "2.0",
+                "method": "icx_sendTransaction",
+                "params": IconConverter.toRawTransaction(callTransactionData),
+                "id": 50889
+            });
+            var parsed = JSON.parse(scoredata);
+            console.log(parsed);
+
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: 'REQUEST_JSON-RPC',
+                    payload: parsed
+                }
+            }));
+        }
+
+        function getEscrow() {
+            var callBuilder = new IconBuilder.CallBuilder;
+            var readOnlyData = callBuilder
+                .from("<%=contractaddr%>")
+                .to('cx7060d4aed45cd66993f75edb2f6c93d404dd239b')
+                .method("getEscrow")
+                .params({
+                    "_orderNumber": "0x" + <%= escrownumber %>
+                })
+                .build();
+            scoredata1 = JSON.stringify({
+                "jsonrpc": "2.0",
+                "method": "icx_call",
+                "params": readOnlyData,
+                "id": 50889
+            });
+            var parsed = JSON.parse(scoredata1);
+            console.log(parsed);
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: 'REQUEST_JSON-RPC',
+                    payload: parsed
+                }
+            }));
+        }
+
+        function balanceOf() {
+            var callBuilder = new IconBuilder.CallBuilder;
+            var readOnlyData = callBuilder
+                .from("<%=contractaddr%>")
+                .to('cx905fdabf67bcf7b6de9bc164fab92840dc00aa3e')
+                .method("balanceOf")
+                .params({
+                    "owner": "<%=contractaddr%>" //car number
+                })
+                .build();
+            scoredata1 = JSON.stringify({
+                "jsonrpc": "2.0",
+                "method": "icx_call",
+                "params": readOnlyData,
+                "id": 50889
+            });
+            var parsed = JSON.parse(scoredata1);
+            console.log(parsed);
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: 'REQUEST_JSON-RPC',
+                    payload: parsed
+                }
+            }));
+        }
+        window.onload = function() {
+            getEscrow();
+            
+        }
+
+
+    </script>
+</body>
+
+</html>

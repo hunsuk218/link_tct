@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>BLOCKCAR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <!-- css -->
+    <link href="stylesheets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="stylesheets/css/fancybox/jquery.fancybox.css" rel="stylesheet">
+    <link href="stylesheets/css/jcarousel.css" rel="stylesheet" />
+    <link href="stylesheets/css/flexslider.css" rel="stylesheet" />
+    <link href="stylesheets/css/style.css" rel="stylesheet" />
+
+    <!-- Theme skin -->
+    <link href="stylesheets/skins/default.css" rel="stylesheet" />
+
+
+
+</head>
+
+
+
+<body>
+    <div id="wrapper">
+        <!-- start header -->
+        <header>
+            <div class="navbar navbar-default navbar-static-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="/"><span>B</span>lockcar</a>
+                    </div>
+
+
+                    <div class="navbar-collapse collapse ">
+                        <table align="right">
+                            <tr>
+                                <td height="20"> </td>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td width="100"><a href="#"><span class="fa fa-address-card-o"></span> 계정 주소 : </a></td>
+                                <td width="330"><span id="contractAddress">
+                                        <%= contractaddr %></span></td>
+                                <td width="200" align="right"><a href="#"><span class="fa fa-gg-circle"></span> 보유 토큰 : </a>&nbsp;&nbsp;&nbsp;<span id="TCTNum"></span></td>
+                                <td width="50"><a href="#">&nbsp;TCT</a></td>
+
+                            </tr>
+                        </table>
+                    </div>
+
+
+
+                    <form action='/mypage' method="POST" name='addrForm'>
+                        <input type="hidden" id="accountaddr" name="accountaddr" value="">
+                    </form>
+                    <form action='/beforesellcar' method="POST" name='addrForm1'>
+                        <input type="hidden" id="accountaddr" name="accountaddr" value="">
+                    </form>
+
+
+                    <div class="navbar-collapse collapse ">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="/">Home</a></li>
+                            <li><a href="/enrollcar">차대번호 등록</a></li>
+                            <li><a href="/buycar">차량 구입</a></li>
+                            <li><a href="#" onclick="javascript:document.addrForm1.submit();">차량 판매</a></li>
+                            <li><a href="/repair">수리이력 등록</a></li>
+                            <li><a href="/searchRepairInfo">수리이력 조회</a></li>
+                            <li><a href="#" onclick="javascript:document.addrForm.submit();">나의 정보</a></li>
+
+
+
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </header>
+        <!-- end header -->
+        <section id="inner-headline">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="breadcrumb">
+                            <li><a href="#"><i class="fa fa-home"></i></a><i class="icon-angle-right"></i></li>
+                            <li class="active">SELL CAR</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="content">
+
+            <div class="container">
+                <center>
+                    <h2>판매하실 차량의 정보를 차례로 입력해주세요.</h2>
+                </center>
+
+                <div class="row">
+
+                    <div class="col-md-8 col-md-offset-2">
+
+
+
+                        <div id="sendmessage">Your message has been sent. Thank you!</div>
+                        <div id="errormessage"></div>
+
+
+                        <script>
+                            function conf()
+                                                {
+                                                    if (confirm("차량판매 하실래요?")) {
+                                                        alert("판매등록 완료");
+                                                        document.getElementById("escrownumber").value++;
+                                                    document.buyform.submit(); 
+                                                } else {
+                                                    alert("차량 판매를 취소하셨습니다");
+                                                }
+                                            }
+                                    </script>
+                        <form action="/sellcar/addcar" method="post" onSubmit="conf(); return false" name="buyform" enctype="multipart/form-data">
+
+
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    차대번호 :
+                                    <%=sellcar%> <input type="hidden" id="car_registed_string" class="form-control" name="wholenumber" data-rule="required" value=<%=sellcar%> >
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    차량번호 :
+                                    <%=carnum%> <input type="hidden" id="car_registed_string" class="form-control" name="carnum" data-rule="required" value=<%=carnum%> >
+                                </div>
+                            </div>
+
+
+
+                            <div class="panel panel-primary">
+
+                                <div class="panel-body">
+                                    <div class="col-md-12">
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+
+                                                전면사진<input type="file" class="form-control file1" name="photo" id="photo" data-rule="required">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-md-offset-2">
+                                            <div id="holder1"></div>
+
+                                        </div>
+                                    </div>
+
+                                    <script>
+                                        var upload = document.getElementsByClassName('file1')[0],
+    holder = document.getElementById('holder1');
+
+ 
+upload.onchange = function (e) {
+  e.preventDefault();
+
+  var file = upload.files[0],
+      reader = new FileReader();
+  reader.onload = function (event) {
+    var img = new Image();
+    img.src = event.target.result;
+    // note: no onload required since we've got the dataurl...I think! :)
+    if (img.width > 560) { // holder width
+      img.width = 560;
+    }
+    holder.innerHTML = '';
+    holder.appendChild(img);
+  };
+  reader.readAsDataURL(file);
+
+  return false;
+};
+</script>
+
+
+
+
+
+                                    <div class="col-md-12">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+
+                                                좌측 사이드사진<input type="file" class="form-control file2" name="photo" id="photo2" data-rule="required">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-md-offset-2">
+                                            <div id="holder2"></div>
+
+                                        </div>
+                                    </div>
+
+                                    <script>
+                                        var upload2 = document.getElementsByClassName('file2')[0],
+    holder2 = document.getElementById('holder2');
+
+ 
+upload2.onchange = function (e) {
+  e.preventDefault();
+
+  var file = upload2.files[0],
+      reader = new FileReader();
+  reader.onload = function (event) {
+    var img = new Image();
+    img.src = event.target.result;
+    // note: no onload required since we've got the dataurl...I think! :)
+    if (img.width > 560) { // holder width
+      img.width = 560;
+    }
+    holder2.innerHTML = '';
+    holder2.appendChild(img);
+  };
+  reader.readAsDataURL(file);
+
+  return false;
+};
+</script>
+
+                                    <div class="col-md-12">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+
+                                                우측 사이드사진<input type="file" class="form-control file3" name="photo" id="photo3" data-rule="required">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-md-offset-2">
+                                            <div id="holder3"></div>
+
+                                        </div>
+                                    </div>
+
+                                    <script>
+                                        var upload3 = document.getElementsByClassName('file3')[0],
+    holder3 = document.getElementById('holder3');
+
+ 
+upload3.onchange = function (e) {
+  e.preventDefault();
+
+  var file = upload3.files[0],
+      reader = new FileReader();
+  reader.onload = function (event) {
+    var img = new Image();
+    img.src = event.target.result;
+    // note: no onload required since we've got the dataurl...I think! :)
+    if (img.width > 560) { // holder width
+      img.width = 560;
+    }
+    holder3.innerHTML = '';
+    holder3.appendChild(img);
+  };
+  reader.readAsDataURL(file);
+
+  return false;
+};
+</script>
+
+                                    <div class="col-md-12">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+
+                                                후면사진<input type="file" class="form-control file4" name="photo" id="photo4" data-rule="required">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-md-offset-2">
+                                            <div id="holder4"></div>
+
+                                        </div>
+                                    </div>
+
+                                    <script>
+                                        var upload4 = document.getElementsByClassName('file4')[0],
+    holder4 = document.getElementById('holder4');
+
+ 
+upload4.onchange = function (e) {
+  e.preventDefault();
+
+  var file = upload4.files[0],
+      reader = new FileReader();
+  reader.onload = function (event) {
+    var img = new Image();
+    img.src = event.target.result;
+    // note: no onload required since we've got the dataurl...I think! :)
+    if (img.width > 560) { // holder width
+      img.width = 560;
+    }
+    holder4.innerHTML = '';
+    holder4.appendChild(img);
+  };
+  reader.readAsDataURL(file);
+
+  return false;
+};
+</script>
+
+                                    <div class="col-md-12">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+
+                                                내부사진1<input type="file" class="form-control file5" name="photo" id="photo5" data-rule="required">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-md-offset-2">
+                                            <div id="holder5"></div>
+
+                                        </div>
+                                    </div>
+
+                                    <script>
+                                        var upload5 = document.getElementsByClassName('file5')[0],
+    holder5 = document.getElementById('holder5');
+
+ 
+upload5.onchange = function (e) {
+  e.preventDefault();
+
+  var file = upload5.files[0],
+      reader = new FileReader();
+  reader.onload = function (event) {
+    var img = new Image();
+    img.src = event.target.result;
+    // note: no onload required since we've got the dataurl...I think! :)
+    if (img.width > 560) { // holder width
+      img.width = 560;
+    }
+    holder5.innerHTML = '';
+    holder5.appendChild(img);
+  };
+  reader.readAsDataURL(file);
+
+  return false;
+};
+</script>
+
+                                    <div class="col-md-12">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+
+                                                내부사진2<input type="file" class="form-control file6" name="photo" id="photo6" data-rule="required">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-md-offset-2">
+                                            <div id="holder6"></div>
+
+                                        </div>
+                                    </div>
+
+                                    <script>
+                                        var upload6 = document.getElementsByClassName('file6')[0],
+    holder6 = document.getElementById('holder6');
+
+ 
+upload6.onchange = function (e) {
+  e.preventDefault();
+
+  var file = upload6.files[0],
+      reader = new FileReader();
+  reader.onload = function (event) {
+    var img = new Image();
+    img.src = event.target.result;
+    // note: no onload required since we've got the dataurl...I think! :)
+    if (img.width > 560) { // holder width
+      img.width = 560;
+    }
+    holder6.innerHTML = '';
+    holder6.appendChild(img);
+  };
+  reader.readAsDataURL(file);
+
+  return false;
+};
+</script>
+
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="col-md-12">
+
+                                <div class="form-group">
+                                    판매가격 (TCT)<input type="text" id="car_registed_string" class="form-control" name="price" data-rule="required">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    사고유무<select class="form-control" name="accident" data-rule="required">
+                                        <option value="">-- 사고유무 --</option>
+                                        <option value="무사고">무사고</option>
+                                        <option value="사고차량">사고</option>
+
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    주행거리 (km) <input type="text" id="car_registed_string" class="form-control" name="distance" data-rule="required">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    지역<select class="form-control" name="location" data-rule="required">
+                                        <option value="">-- 지역 --</option>
+                                        <option value="서울">서울</option>
+                                        <option value="인천">인천</option>
+                                        <option value="세종">세종</option>
+                                        <option value="대전">대전</option>
+                                        <option value="대구">대구</option>
+                                        <option value="광주">광주</option>
+                                        <option value="울산">울산</option>
+                                        <option value="부산">부산</option>
+                                        <option value="경기도">경기도</option>
+                                        <option value="강원도">강원도</option>
+                                        <option value="충청북도">충청북도</option>
+                                        <option value="충청남도">충청남도</option>
+                                        <option value="경상북도">경상북도</option>
+                                        <option value="경상남도">경상남도</option>
+                                        <option value="전라북도">전라북도</option>
+                                        <option value="전라남도">전라남도</option>
+                                        <option value="제주도">제주도</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    특이사항<textarea class="form-control" name="etc" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="ex) 스마트키, 썬룹, 네비, 대차 등"></textarea>
+                                    <div class="validation"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+
+
+                                <input type="hidden" id="dealnumber" name="dealnumber" value=''>
+                                <script>
+                                    var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //January is 0!
+var yyyy = today.getFullYear();
+if(dd<10) {
+    dd='0'+dd
+} 
+if(mm<10) {
+    mm='0'+mm
+} 
+today = yyyy+'' + mm+''+dd;
+    
+    function makeid() {
+  var text = "";
+  var possible = "0123456789";
+
+  for (var i = 0; i < 4; i++){
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+    
+
+  }
+        text = today+text;
+  document.getElementById("dealnumber").value = text;
+}
+        makeid();
+        
+    </script>
+
+                                <input type="hidden" id="escrownumber" name="escrownumber" value=<%=escrownumber %>>
+                                <input type="hidden" id="status" name="status" value="거래전">
+                                <input type="hidden" name="accountaddr" value=<%=contractaddr %>>
+                                <div class="text-center"><button type="submit" class="btn btn-theme">등록</button>&nbsp;&nbsp;&nbsp;
+                                    <button type="reset" class="btn btn-danger">취소</button></div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </footer>
+    </div>
+    <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
+    <!-- javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="javascripts/jquery.js"></script>
+    <script src="javascripts/jquery.easing.1.3.js"></script>
+    <script src="javascripts/bootstrap.min.js"></script>
+    <script src="javascripts/jquery.fancybox.pack.js"></script>
+    <script src="javascripts/jquery.fancybox-media.js"></script>
+    <script src="javascripts/google-code-prettify/prettify.js"></script>
+    <script src="javascripts/portfolio/jquery.quicksand.js"></script>
+    <script src="javascripts/portfolio/setting.js"></script>
+    <script src="javascripts/jquery.flexslider.js"></script>
+    <script src="javascripts/animate.js"></script>
+    <script src="javascripts/custom.js"></script>
+    <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/gh/icon-project/icon-sdk-js/build/icon-sdk-js.min.js"></script>
+    <script src="javascripts/utf8.js"></script>
+    <script>
+        jQuery(document).ready(function($) {
+            //Google Map
+            var get_latitude = $('#google-map').data('latitude');
+            var get_longitude = $('#google-map').data('longitude');
+
+            function initialize_google_map() {
+                var myLatlng = new google.maps.LatLng(get_latitude, get_longitude);
+                var mapOptions = {
+                    zoom: 14,
+                    scrollwheel: false,
+                    center: myLatlng
+                };
+                var map = new google.maps.Map(document.getElementById('google-map'), mapOptions);
+                var marker = new google.maps.Marker({
+                    position: myLatlng,
+                    map: map
+                });
+            }
+            google.maps.event.addDomListener(window, 'load', initialize_google_map);
+        });
+
+    </script>
+    <script src="contactform/contactform.js"></script>
+
+    <script>
+        var iconService = window['icon-sdk-js'];
+        var IconAmount = iconService.IconAmount;
+        var IconConverter = iconService.IconConverter;
+        var IconBuilder = iconService.IconBuilder;
+
+        var contractAddress = document.getElementById("contractAddress");
+        var enrollcar_enroll = document.getElementById("enrollcar_enroll");
+
+
+        window.addEventListener("ICONEX_RELAY_RESPONSE", eventHandler, false);
+        // type and payload are in event.detail
+        function eventHandler(event) {
+            var type = event.detail.type;
+            var payload = event.detail.payload;
+            switch (type) {
+                case "RESPONSE_HAS_ACCOUNT":
+
+                    break;
+
+
+                case "RESPONSE_ADDRESS":
+                    fromAddress = payload;
+                    isRegist.innerHTML = "HELLO"
+                    contractAddress.innerHTML = payload;
+                    break;
+
+                case "RESPONSE_JSON-RPC":
+                    console.log(payload.result);
+                    var HexToDecimal = parseInt(payload.result.toString(10), 16);
+                    document.getElementById("TCTNum").innerHTML = HexToDecimal;
+                    break;
+                case "CANCEL_JSON-RPC":
+                    break;
+
+
+
+                default:
+            }
+
+        }
+        // Register onclick event to the button and dispatch a new CustomEvent ICONEX_RELAY_REQUEST
+
+        function setCar() {
+            var callTransactionBuilder = new IconBuilder.CallTransactionBuilder;
+            var callTransactionData = callTransactionBuilder
+                .from("<%=contractaddr%>")
+                .to("cx1bb212f4567f43ddac4cf24a9ed99f71e9ca36a5")
+                .nid(IconConverter.toBigNumber(3))
+                .timestamp((new Date()).getTime() * 1000)
+                .stepLimit(IconConverter.toBigNumber(100000000))
+                .version(IconConverter.toBigNumber(3))
+                .method('setCar')
+                .params({
+                    "_carNumber": document.getElementById("car_registed_string").value
+                })
+                .build();
+
+            scoredata = JSON.stringify({
+                "jsonrpc": "2.0",
+                "method": "icx_sendTransaction",
+                "params": IconConverter.toRawTransaction(callTransactionData),
+                "id": 50889
+            });
+            var parsed = JSON.parse(scoredata);
+            console.log(parsed);
+
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: 'REQUEST_JSON-RPC',
+                    payload: parsed
+                }
+            }));
+        }
+
+
+
+        function balanceOf() {
+            var callBuilder = new IconBuilder.CallBuilder;
+            var readOnlyData = callBuilder
+                .from("<%=contractaddr%>")
+                .to('cx905fdabf67bcf7b6de9bc164fab92840dc00aa3e')
+                .method("balanceOf")
+                .params({
+                    "owner": "<%=contractaddr%>" //car number
+                })
+                .build();
+            scoredata1 = JSON.stringify({
+                "jsonrpc": "2.0",
+                "method": "icx_call",
+                "params": readOnlyData,
+                "id": 50889
+            });
+            var parsed = JSON.parse(scoredata1);
+            console.log(parsed);
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: 'REQUEST_JSON-RPC',
+                    payload: parsed
+                }
+            }));
+        }
+
+        window.onload = function() {
+            balanceOf();
+        }
+
+
+
+    </script>
+</body>
+
+</html>

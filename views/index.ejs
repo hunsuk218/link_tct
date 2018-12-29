@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>BLOCKCAR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <!-- css -->
+    <link href="stylesheets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="stylesheets/css/fancybox/jquery.fancybox.css" rel="stylesheet">
+    <link href="stylesheets/css/jcarousel.css" rel="stylesheet" />
+    <link href="stylesheets/css/flexslider.css" rel="stylesheet" />
+    <link href="stylesheets/css/style.css" rel="stylesheet" />
+
+    <!-- Theme skin -->
+    <link href="stylesheets/skins/default.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Black+And+White+Picture|Black+Han+Sans|Cute+Font|Do+Hyeon|Dokdo|East+Sea+Dokdo|Gaegu|Gamja+Flower|Gothic+A1|Gugi|Hi+Melody|Jua|Kirang+Haerang|Nanum+Brush+Script|Nanum+Gothic|Nanum+Gothic+Coding|Nanum+Myeongjo|Nanum+Pen+Script|Noto+Sans+KR|Noto+Serif+KR|Poor+Story|Song+Myung|Stylish|Sunflower:300|Yeon+Sung&amp;subset=korean" rel="stylesheet">
+
+
+</head>
+<script>
+    var flag = <%=errorFlag%>;
+
+         if(flag != null && flag == 1)
+         {
+           alert("죄송합니다. 이미 거래중인 차량입니다.");
+          }
+    </script>
+
+<script>
+    var flag = <%=errorFlag%>;
+
+         if(flag != null && flag == 2)
+         {
+           alert("등록되지 않은 차량입니다");
+          }
+    </script>
+
+<script>
+    var flag = <%=errorFlag%>;
+
+         if(flag != null && flag == 3)
+         {
+           alert("판매자는 구매할 수 없습니다.");
+          }
+    </script>
+
+<body>
+    <div id="wrapper">
+        <!-- start header -->
+        <header>
+            <div class="navbar navbar-default navbar-static-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="/"><span>B</span>lockcar</a>
+                    </div>
+
+
+                    <div class="navbar-collapse collapse ">
+                        <table align="right">
+                            <tr>
+                                <td height="20"> </td>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td width="100"><a href="#"><span class="fa fa-address-card-o"></span> 계정 주소 : </a></td>
+                                <td width="330"><span id="contractAddress"><%= contractaddr %></span></td>
+                                
+                                <td width="200" align="right"><a href="#"><span class="fa fa-gg-circle"></span> 보유 토큰 : </a>&nbsp;&nbsp;&nbsp;<span id="TCTNum"></span></td>
+                                <td width="50"><a href="#">&nbsp;TCT</a></td>
+
+                            </tr>
+                        </table>
+                    </div>
+
+                    <form action='/mypage' method="POST" name='addrForm'>
+                        <input type="hidden" id="1" name="accountaddr" value="">
+                    </form>
+
+                    <form action='/beforesellcar' method="POST" name='addrForm1'>
+                        <input type="hidden" id="2" name="accountaddr" value="">
+                    </form>
+
+
+                    <!-- fix -->
+                    <form action='/' method="get" name='addrForm2'>
+                        <input type="hidden" id="3" name="contractaddr" value="">
+                    </form>
+
+
+                    <div class="navbar-collapse collapse ">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="/">Home</a></li>
+                            <li><a href="/enrollcar">차대번호 등록</a></li>
+                            <li><a href="/buycar">차량 구입</a></li>
+                            <li><a href="#" onclick="javascript:document.addrForm1.submit();">차량 판매</a></li>
+                            <li><a href="/repair">수리이력 등록</a></li>
+                            <li><a href="/searchRepairInfo">수리이력 조회</a></li>
+                            <li><a href="#" onclick="javascript:document.addrForm.submit();">나의 정보</a></li>
+                            <li><a id="regiregi" data-toggle="modal" data-target="#">
+                                    <button type="button" class="btn btn-theme" style="height:30px; width:85px;"><span id="isRegist">계정변경</span></button></a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </header>
+
+
+        <section id="inner-headline">
+
+            <div class="container">
+                <div class="row">
+
+                </div>
+            </div>
+        </section>
+
+        <!-- end header -->
+        <section id="featured">
+            <!-- start slider -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!-- Slider -->
+                        <div id="main-slider" class="flexslider">
+                            <ul class="slides">
+                                <li>
+                                    <img src="images/slides/1.jpg" alt="" />
+
+                                </li>
+                                <li>
+                                    <img src="images/slides/2.jpg" alt="" />
+
+                                </li>
+
+                            </ul>
+                        </div>
+                        <!-- end slider -->
+                    </div>
+                </div>
+            </div>
+
+
+
+        </section>
+
+
+
+
+
+
+        <section class="callaction">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="big-cta">
+                            <div class="cta-text">
+
+                                <div class="col-lg-5">
+
+                                    <dl class="dl-horizontal">
+                                        <img src="images/car.png">
+
+                                    </dl>
+                                </div>
+                                <div class="col-lg-7">
+
+                                    <dl class="dl-horizontal">
+
+                                        <h1> <span style="color:white;font-family: 'Yeon Sung';">믿을 수 밖에 없는 중고차 거래소!</span></h1>
+
+                                        <h2><span style="font-family: 'Yeon Sung';">BLOCKCAR</span> <span style="color:white;font-family: 'Yeon Sung';">에 오신 것을 환영합니다.</span></h2>
+                                    </dl>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="callaction" id="content">
+
+
+            <div class="container">
+
+
+                <div class="col-lg-4">
+                    <div class="box">
+                        <div class="box-gray aligncenter">
+                            <h4 style="font-family: 'Jua';">Reliability</h4>
+                            <div class="icon">
+                                <i class="fa fa-handshake-o fa-3x" aria-hidden="true"></i>
+                            </div>
+                            <p style="font-size: 20px;font-family: 'Do Hyeon';">
+                                사고/수리 내역을 조작할 수 없기 때문에 믿을 수 밖에 없습니다!
+
+                            </p>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="box">
+                        <div class="box-gray aligncenter">
+                            <h4 style="font-family: 'Jua';">Security</h4>
+                            <div class="icon">
+                                <i class="fa fa-lock fa-3x"></i>
+                            </div>
+                            <p style="font-size: 20px;font-family: 'Do Hyeon';">
+                                동일 데이터가 분산돼 있어 해킹에 안전하고, 위·변조가 불가능합니다!
+
+                            </p>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="box">
+                        <div class="box-gray aligncenter">
+                            <h4 style="font-family: 'Jua';">Transparency</h4>
+                            <div class="icon">
+                                <i class="fa fa-folder-open-o fa-3x" aria-hidden="true"></i>
+                            </div>
+                            <p style="font-size: 20px;font-family: 'Do Hyeon';">
+                                중고차 구매/판매를 원하는 모든 대상에게 거래 정보가 공개됩니다!
+
+                            </p>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+        </section>
+
+
+
+        <section class="callaction" id="content">
+
+
+            <div class="container">
+
+
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+
+                            <div class="box">
+                                <form class="text-center" action="/repairinfo" method="POST">
+                                    <div class="box-gray aligncenter">
+                                        <h2>수리이력 조회</h2>
+                                        <div class="icon">
+                                            <i class="fa fa-search fa-3x"></i>
+                                        </div>
+                                        <p>
+                                            수리이력을 조회할 차량의 차대번호나 차량번호를 입력해주세요
+                                        </p>
+
+                                        <center><input type="text" id="materialContactFormName" class="form-control" name="carnum" placeholder="ex) 01가1111  or  KMHEM42APXA000000" style="width:50%" required>
+                                        </center>
+
+                                    </div>
+                                    <div class="box-bottom">
+                                        <center> <button class="btn btn-theme btn-rounded btn-block z-depth-0 my-4 waves-effect" type="submit" style="width:50%; font-size:18px">Search</button></center>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- divider -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="solidline">
+                        </div>
+                    </div>
+                </div>
+                <!-- end divider -->
+                <!-- Portfolio Projects -->
+
+
+            </div>
+        </section>
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </footer>
+    </div>
+    <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
+    <!-- javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="javascripts/jquery.js"></script>
+    <script src="javascripts/jquery.easing.1.3.js"></script>
+    <script src="javascripts/bootstrap.min.js"></script>
+    <script src="javascripts/jquery.fancybox.pack.js"></script>
+    <script src="javascripts/jquery.fancybox-media.js"></script>
+    <script src="javascripts/google-code-prettify/prettify.js"></script>
+    <script src="javascripts/portfolio/jquery.quicksand.js"></script>
+    <script src="javascripts/portfolio/setting.js"></script>
+    <script src="javascripts/jquery.flexslider.js"></script>
+    <script src="javascripts/animate.js"></script>
+    <script src="javascripts/custom.js"></script>
+    <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
+    <script src="javascripts/utf8.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/icon-project/icon-sdk-js/build/icon-sdk-js.min.js"></script>
+
+    <script>
+        var iconService = window['icon-sdk-js'];
+        var IconAmount = iconService.IconAmount;
+        var IconConverter = iconService.IconConverter;
+        var IconBuilder = iconService.IconBuilder;
+        var contractAddress = document.getElementById("contractAddress");
+
+
+
+        window.addEventListener("ICONEX_RELAY_RESPONSE", eventHandler, false);
+        // type and payload are in event.detail
+        function eventHandler(event) {
+            var type = event.detail.type;
+            var payload = event.detail.payload;
+            switch (type) {
+                case "RESPONSE_HAS_ACCOUNT":
+                    if (payload.hasAccount == true) {} else {
+                        contractAddress.innerHTML = "Please create wallet";
+                    }
+                    break;
+
+
+                case "RESPONSE_ADDRESS":
+                    fromAddress = payload;
+                    isRegist.innerHTML = "HELLO"
+                    contractAddress.innerHTML = payload;
+                    document.getElementById("3").value = payload;
+                    document.addrForm2.submit()
+                    //    var parm = new Array(); 
+                    //    var form = document.createElement("form");
+                    //     form.action = "/loginSession";
+                    //     form.method = "post";
+                    //     parm.push( ['addr', payload] );
+                    //     document.body.appendChild(form);
+                    //     form.submit();
+                    // "key" : ""
+                    // update key -> address
+                    // logout --> "key" : ""
+                    break;
+
+                default:
+            }
+        }
+        // Register onclick event to the button and dispatch a new CustomEvent ICONEX_RELAY_REQUEST
+
+        window.onload = function() {
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: "REQUEST_HAS_ACCOUNT"
+                }
+            }));
+        }
+
+        isRegist.onclick = function() {
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: 'REQUEST_ADDRESS'
+                }
+            }))
+        };
+
+    </script>
+    <script>
+        var iconService = window['icon-sdk-js'];
+        var IconAmount = iconService.IconAmount;
+        var IconConverter = iconService.IconConverter;
+        var IconBuilder = iconService.IconBuilder;
+
+        var contractAddress = document.getElementById("contractAddress");
+        var enrollcar_enroll = document.getElementById("enrollcar_enroll");
+
+
+        window.addEventListener("ICONEX_RELAY_RESPONSE", eventHandler, false);
+        // type and payload are in event.detail
+        function eventHandler(event) {
+            var type = event.detail.type;
+            var payload = event.detail.payload;
+            switch (type) {
+                case "RESPONSE_HAS_ACCOUNT":
+
+                    break;
+
+
+                case "RESPONSE_ADDRESS":
+                    fromAddress = payload;
+                    isRegist.innerHTML = "HELLO"
+                    contractAddress.innerHTML = payload;
+                    break;
+
+                case "RESPONSE_JSON-RPC":
+                    console.log(payload.result);
+                    var HexToDecimal = parseInt(payload.result.toString(10), 16);
+                    document.getElementById("TCTNum").innerHTML = HexToDecimal;
+
+                    break;
+                case "CANCEL_JSON-RPC":
+                    break;
+
+
+
+                default:
+            }
+
+        }
+        // Register onclick event to the button and dispatch a new CustomEvent ICONEX_RELAY_REQUEST
+
+        function balanceOf() {
+            var callBuilder = new IconBuilder.CallBuilder;
+            var readOnlyData = callBuilder
+                .from("<%=contractaddr%>")
+                .to('cx905fdabf67bcf7b6de9bc164fab92840dc00aa3e')
+                .method("balanceOf")
+                .params({
+                    "owner": "<%=contractaddr%>" //car number
+                })
+                .build();
+            scoredata1 = JSON.stringify({
+                "jsonrpc": "2.0",
+                "method": "icx_call",
+                "params": readOnlyData,
+                "id": 50889
+            });
+            var parsed = JSON.parse(scoredata1);
+            console.log(parsed);
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: 'REQUEST_JSON-RPC',
+                    payload: parsed
+                }
+            }));
+        }
+
+        function setCar() {
+            var callTransactionBuilder = new IconBuilder.CallTransactionBuilder;
+            var callTransactionData = callTransactionBuilder
+                .from("<%=contractaddr%>")
+                .to("cx1bb212f4567f43ddac4cf24a9ed99f71e9ca36a5")
+                .nid(IconConverter.toBigNumber(3))
+                .timestamp((new Date()).getTime() * 1000)
+                .stepLimit(IconConverter.toBigNumber(100000000))
+                .version(IconConverter.toBigNumber(3))
+                .method('setCar')
+                .params({
+                    "_carNumber": document.getElementById("car_registed_string").value
+                })
+                .build();
+
+            scoredata = JSON.stringify({
+                "jsonrpc": "2.0",
+                "method": "icx_sendTransaction",
+                "params": IconConverter.toRawTransaction(callTransactionData),
+                "id": 50889
+            });
+            var parsed = JSON.parse(scoredata);
+            console.log(parsed);
+
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: 'REQUEST_JSON-RPC',
+                    payload: parsed
+                }
+            }));
+        }
+
+
+
+
+
+        window.onload = function() {
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: "REQUEST_HAS_ACCOUNT"
+                }
+            }));
+            balanceOf();
+        }
+
+        isRegist.onclick = function() {
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: 'REQUEST_ADDRESS'
+                }
+            }))
+        }
+
+        enrollcar_enroll.onclick = function() {
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: 'REQUEST_JSON-RPC',
+                    payload: parsed
+                }
+            }));
+
+
+        }
+
+    </script>
+</body>
+
+</html>

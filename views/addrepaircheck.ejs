@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>BLOCKCAR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <!-- css -->
+    <link href="stylesheets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="stylesheets/css/fancybox/jquery.fancybox.css" rel="stylesheet">
+    <link href="stylesheets/css/jcarousel.css" rel="stylesheet" />
+    <link href="stylesheets/css/flexslider.css" rel="stylesheet" />
+    <link href="stylesheets/css/style.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Theme skin -->
+    <link href="stylesheets/skins/default.css" rel="stylesheet" />
+
+    <style>
+        p{
+        display:none;
+    }
+    </style>
+
+
+</head>
+
+
+
+
+<body>
+    <div id="wrapper">
+        <!-- start header -->
+        <header>
+            <div class="navbar navbar-default navbar-static-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="/"><span> B</span>lockcar</a>
+                    </div>
+
+
+                    <div class="navbar-collapse collapse ">
+                        <table align="right">
+                            <tr>
+                                <td height="20"> </td>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td width="100"><a href="#"><span class="fa fa-address-card-o"></span> 계정 주소 : </a></td>
+                                <td width="330"><span id="contractAddress">
+                                        <%= contractaddr %></span></td>
+                                <td width="200" align="right"><a href="#"><span class="fa fa-gg-circle"></span> 보유 토큰 : </a>&nbsp;&nbsp;&nbsp;<span id="TCTNum"></span></td>
+                                <td width="50"><a href="#">&nbsp;TCT</a></td>
+
+                            </tr>
+                        </table>
+                    </div>
+
+
+
+                    <form action='/mypage' method="POST" name='addrForm'>
+                        <input type="hidden" id="accountaddr" name="accountaddr" value="">
+                    </form>
+
+
+                    <form action='/beforesellcar' method="POST" name='addrForm1'>
+                        <input type="hidden" id="accountaddr" name="accountaddr" value="">
+                    </form>
+
+
+                    <div class="navbar-collapse collapse ">
+                        <ul class="nav navbar-nav">
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/enrollcar">차대번호 등록</a></li>
+                            <li><a href="/buycar">차량 구입</a></li>
+                            <li><a href="#" onclick="javascript:document.addrForm1.submit();">차량 판매</a></li>
+                            <li><a href="/repair">수리이력 등록</a></li>
+                            <li><a href="/searchRepairInfo">수리이력 조회</a></li>
+                            <li><a href="#" onclick="javascript:document.addrForm.submit();">나의 정보</a></li>
+
+
+
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </header>
+        <!-- end header -->
+        <section id="inner-headline">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="breadcrumb">
+                            <li><a href="#"><i class="fa fa-home"></i></a><i class="icon-angle-right"></i></li>
+                            <li><a href="#">REPAIR DETILS</a><i class="icon-angle-right"></i></li>
+                            <li class="active">ADD REPAIR<i class="icon-angle-right"></i></li>
+                            <li><a href="#">ADD REPAIR CHECK</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="content">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h4>당신이 선택한 정비목록입니다.</h4>
+                    </div>
+                    <div class="col-lg-12">
+                        <table class="table table-bordered table-hover slideanim">
+                            <thead>
+                                <tr>
+                                    <th class="col-lg-4 text-center">수리 내용</th>
+                                    <th class="col-lg-4 text-center">수리 등록자</th>
+                                    <th class="col-lg-4 text-center">수리 상태</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <script>
+                                    
+                                    document.write('<tr>');
+
+                                    document.write('<td class="middle">');
+                                    _keyValuePair =<%= rpname %>;
+
+                                    if(_keyValuePair==1)
+                                    {
+                                    
+                                        document.write("1.후드");
+                                    }
+                                    else if(_keyValuePair==2)
+                                    {
+                                        document.write("2.프론트휀더");
+                                    }
+                                    else if(_keyValuePair==3)
+                                    {
+                                        document.write("3.도어");
+                                    }
+                                    else if(_keyValuePair==4)
+                                    {
+                                        document.write("4.트렁크리드");
+                                    }
+                                    else if(_keyValuePair==5)
+                                    {
+                                        document.write("5.라디에이터 서포트");
+                                    }
+                                    else if(_keyValuePair==6)
+                                    {
+                                        document.write("6.쿼터패널");
+                                    }
+                                    else if(_keyValuePair==7)
+                                    {
+                                        document.write("7.루프패널");
+                                    }
+                                    else if(_keyValuePair==8)
+                                    {
+                                        document.write("8.사이드실 패널");
+                                    }
+                                    else if(_keyValuePair==9)
+                                    {
+                                        document.write("프론트패널");
+                                    }
+                                    else if(_keyValuePair==10)
+                                    {
+                                        document.write("10.크로스멤버");
+                                    }
+                                    else if(_keyValuePair==11)
+                                    {
+                                        document.write("11.인사이드패널");
+                                    }
+                                    else if(_keyValuePair==12)
+                                    {
+                                        document.write("12.사이드멤버");
+                                    }
+                                    else if(_keyValuePair==13)
+                                    {
+                                        document.write("13.휠하우스");
+                                    }
+                                    else if(_keyValuePair==14)
+                                    {
+                                        document.write("14.필러패널");
+                                    }
+                                    else if(_keyValuePair==15)
+                                    {
+                                        document.write("15.대쉬패널");
+                                    }
+                                    else if(_keyValuePair==16)
+                                    {
+                                        document.write("16.플로어패널");
+                                    }
+                                    else if(_keyValuePair==17)
+                                    {
+                                        document.write("17.트렁크플로어");
+                                    }
+                                    else if(_keyValuePair==18)
+                                    {
+                                        document.write("18.리어패널");
+                                    }
+                                    else if(_keyValuePair==19)
+                                    {
+                                        document.write("19.패키지트레이");
+                                    }
+                                    document.write ('</td>');
+
+                                    document.write('<td class="middle">');
+                                    document.write("<%= contractaddr %>");
+                                    document.write ('</td>');
+
+                                    document.write('<td class="middle">');
+                                    document.write('<div class="col-lg-3">');
+                                    document.write('<div class="form-check">');   
+                                    document.write('<input type="radio" name="')
+                                    document.write(1);
+                                    document.write('" class="form-check-input" value="1">');
+                                    document.write('<label class="form-check-label" >교환</label>');
+                                    document.write('</div></div>');
+                                    
+
+                                    
+                                    document.write('<div class="col-lg-3">');
+                                    document.write('<div class="form-check">');   
+                                    document.write('<input type="radio" name="')
+                                    document.write(1);
+                                    document.write('" class="form-check-input" value="2">');
+                                    document.write('<label class="form-check-label" >교체</label>');
+                                    document.write('</div></div>');
+
+                                    document.write('<div class="col-lg-3">');
+                                    document.write('<div class="form-check">');   
+                                    document.write('<input type="radio" name="')
+                                    document.write(1);
+                                    document.write('" class="form-check-input" value="3">');
+                                    document.write('<label class="form-check-label" >판금/용접</label>');
+                                    document.write('</div></div>');
+                                    document.write('<div class="col-lg-3">');
+                                    document.write('<div class="form-check">');   
+                                    document.write('<input type="radio" name="')
+                                    document.write(1);
+                                    document.write('" class="form-check-input" value="4">');
+                                    document.write('<label class="form-check-label" >수리 미완료</label>');
+                                    document.write('</div></div>');
+                                    document.write ('</td>');
+
+
+                                    document.write ('</tr>');
+                                
+                                    </script>
+
+                            </tbody>
+                        <script>
+                        var selected = $("input[type='radio'][name='1']:checked");
+                        </script>
+                        </table>
+
+                            <div class="text-center"><button class="btn btn-theme" id="add" onclick="setRepairInfo()">등록하기</button>&nbsp;&nbsp;<button class="btn btn-danger" type="reset">취소</button></div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </footer>
+    </div>
+    <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
+    <!-- javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="javascripts/jquery.js"></script>
+    <script src="javascripts/jquery.easing.1.3.js"></script>
+    <script src="javascripts/bootstrap.min.js"></script>
+    <script src="javascripts/jquery.fancybox.pack.js"></script>
+    <script src="javascripts/jquery.fancybox-media.js"></script>
+    <script src="javascripts/google-code-prettify/prettify.js"></script>
+    <script src="javascripts/portfolio/jquery.quicksand.js"></script>
+    <script src="javascripts/portfolio/setting.js"></script>
+    <script src="javascripts/jquery.flexslider.js"></script>
+    <script src="javascripts/animate.js"></script>
+    <script src="javascripts/custom.js"></script>
+    <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/gh/icon-project/icon-sdk-js/build/icon-sdk-js.min.js"></script>
+    <script src="javascripts/utf8.js"></script>
+    <script>
+        var iconService = window['icon-sdk-js'];
+        var IconAmount = iconService.IconAmount;
+        var IconConverter = iconService.IconConverter;
+        var IconBuilder = iconService.IconBuilder;
+
+        var contractAddress = document.getElementById("contractAddress");
+        var enrollcar_enroll = document.getElementById("enrollcar_enroll");
+
+
+        window.addEventListener("ICONEX_RELAY_RESPONSE", eventHandler, false);
+        // type and payload are in event.detail
+        function eventHandler(event) {
+            var type = event.detail.type;
+            var payload = event.detail.payload;
+            switch (type) {
+                case "RESPONSE_HAS_ACCOUNT":
+
+                    break;
+
+
+                case "RESPONSE_ADDRESS":
+                    fromAddress = payload;
+                    isRegist.innerHTML = "HELLO"
+                    contractAddress.innerHTML = payload;
+                    break;
+
+                case "RESPONSE_JSON-RPC":
+                    console.log(payload.result);
+                    
+var HexToDecimal = parseInt(payload.result.toString(10), 16);
+document.getElementById("TCTNum").innerHTML = HexToDecimal;
+                    break;
+                case "CANCEL_JSON-RPC":
+                    break;
+
+
+
+                default:
+            }
+
+        }
+        // Register onclick event to the button and dispatch a new CustomEvent ICONEX_RELAY_REQUEST
+
+
+        function setRepairInfo() {
+            var callTransactionBuilder = new IconBuilder.CallTransactionBuilder;
+            var callTransactionData = callTransactionBuilder
+                .from("<%=contractaddr%>")
+                .to("cx1bb212f4567f43ddac4cf24a9ed99f71e9ca36a5")
+                .nid(IconConverter.toBigNumber(3))
+                .timestamp((new Date()).getTime() * 1000)
+                .stepLimit(IconConverter.toBigNumber(100000000))
+                .version(IconConverter.toBigNumber(3))
+                .method('setRepairInfo')
+                .params({
+                    "_carNumber": "<%= carname_repair %>",
+                    "_repairInfo": "<%= rpname %>",
+                    "_repairStatus": document.querySelector('input[name="1"]:checked').value
+                })
+                .build();
+
+            scoredata = JSON.stringify({
+                "jsonrpc": "2.0",
+                "method": "icx_sendTransaction",
+                "params": IconConverter.toRawTransaction(callTransactionData),
+                "id": 50889
+            });
+            var parsed = JSON.parse(scoredata);
+            console.log(parsed);
+
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: 'REQUEST_JSON-RPC',
+                    payload: parsed
+                }
+            }));
+        }
+
+
+
+        function balanceOf() {
+            var callBuilder = new IconBuilder.CallBuilder;
+            var readOnlyData = callBuilder
+                .from("<%=contractaddr%>")
+                .to('cx905fdabf67bcf7b6de9bc164fab92840dc00aa3e')
+                .method("balanceOf")
+                .params({
+                    "owner": "<%=contractaddr%>" //car number
+                })
+                .build();
+            scoredata1 = JSON.stringify({
+                "jsonrpc": "2.0",
+                "method": "icx_call",
+                "params": readOnlyData,
+                "id": 50889
+            });
+            var parsed = JSON.parse(scoredata1);
+            console.log(parsed);
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: 'REQUEST_JSON-RPC',
+                    payload: parsed
+                }
+            }));
+        }
+
+        window.onload = function() {
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: "REQUEST_HAS_ACCOUNT"
+                }
+            }));
+            balanceOf();
+        }
+
+
+    </script>
+
+</body>
+
+</html>

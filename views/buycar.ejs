@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>BLOCKCAR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <!-- css -->
+    <link href="stylesheets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="stylesheets/css/fancybox/jquery.fancybox.css" rel="stylesheet">
+    <link href="stylesheets/css/jcarousel.css" rel="stylesheet" />
+    <link href="stylesheets/css/flexslider.css" rel="stylesheet" />
+    <link href="stylesheets/css/style.css" rel="stylesheet" />
+
+    <!-- Theme skin -->
+    <link href="stylesheets/skins/default.css" rel="stylesheet" />
+
+
+
+</head>
+
+
+<body>
+    <div id="wrapper">
+        <!-- start header -->
+        <header>
+            <div class="navbar navbar-default navbar-static-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="/"><span>B</span>lockcar</a>
+                    </div>
+
+
+                    <div class="navbar-collapse collapse ">
+                        <table align="right">
+                            <tr>
+                                <td height="20"> </td>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td width="100"><a href="#"><span class="fa fa-address-card-o"></span> 계정 주소 : </a></td>
+                                <td width="330"><span id="contractAddress">
+                                        <%= contractaddr %></span></td>
+                                <td width="200" align="right"><a href="#"><span class="fa fa-gg-circle"></span> 보유 토큰 : </a>&nbsp;&nbsp;&nbsp;<span id="TCTNum"></span></td>
+                                <td width="50"><a href="#">&nbsp;TCT</a></td>
+
+                            </tr>
+                        </table>
+                    </div>
+
+
+
+                    <form action='/mypage' method="POST" name='addrForm'>
+                        <input type="hidden" id="accountaddr" name="accountaddr" value="">
+                    </form>
+
+                    <form action='/beforesellcar' method="POST" name='addrForm1'>
+                        <input type="hidden" id="accountaddr" name="accountaddr" value="">
+                    </form>
+
+
+                    <div class="navbar-collapse collapse ">
+                        <ul class="nav navbar-nav">
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/enrollcar">차대번호 등록</a></li>
+                            <li class="active"><a href="/buycar">차량 구입</a></li>
+                            <li><a href="#" onclick="javascript:document.addrForm1.submit();">차량 판매</a></li>
+                            <li><a href="/repair">수리이력 등록</a></li>
+                            <li><a href="/searchRepairInfo">수리이력 조회</a></li>
+                            <li><a href="#" onclick="javascript:document.addrForm.submit();">나의 정보</a></li>
+
+
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </header>
+        <!-- end header -->
+        <section id="inner-headline">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="breadcrumb">
+                            <li><a href="#"><i class="fa fa-home"></i></a><i class="icon-angle-right"></i></li>
+
+                            <li class="active">BUY CAR</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="content">
+            <div class="container">
+                <div class="row">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-1">
+                                </div>
+                                <div class="col-lg-10">
+                                    <div class="box">
+                                        <form action='/search' method="POST">
+                                            <div class="box-gray aligncenter">
+                                                <h2>찾고 계시는 차량이 있으신가요?</h2>
+                                                <div class="icon">
+                                                    <i class="fa fa-car fa-5x"></i>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4 col-md-offset-4">
+                                                        <select id="region" name="region" class="form-control" required>
+                                                            <option value="">-- 구분 --</option>
+                                                            <option value="domestic">국산차</option>
+                                                            <option value="imported">수입차</option>
+                                                        </select>
+
+
+                                                        <select id="maker" name="maker" class="form-control" required>
+                                                            <option value="">-- 제조사 --</option>
+                                                            <option class="domestic" value="현대">현대</option>
+                                                            <option class="domestic" value="기아">기아</option>
+                                                            <option class="domestic" value="제네시스">제네시스</option>
+                                                            <option class="imported" value="BMW">BMW</option>
+                                                            <option class="imported" value="벤츠">벤츠</option>
+                                                            <option class="imported" value="아우디">아우디</option>
+                                                            <option class="imported" value="렉서스">렉서스</option>
+                                             
+                                                        </select>
+
+
+
+
+
+                                                        <script src="//code.jquery.com/jquery.min.js"></script>
+                                                        <script src='//rawgit.com/tuupola/jquery_chained/master/jquery.chained.min.js'></script>
+                                                        <script>
+                                                            $("#maker").chained("#region");
+                                                $("#model").chained("#maker");
+                                                $("#detail").chained("#model");
+                                            </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+
+
+
+
+
+                                            <div class="box-bottom">
+                                                <input type="hidden" id="accountaddr" name="accountaddr" value="">
+                                                <center> <button class="btn btn-theme btn-rounded btn-block z-depth-0 my-4 waves-effect" type="submit" style="width:50%; font-size:18px">Search</button></center>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-lg-1">
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="row" align="center">
+
+
+                    <% cars.forEach(function(item, index){  %>
+
+                    <div class="col-lg-4" style="padding:5px;">
+                        <div style="border:2px dotted #68A4C4;">
+                            <img src="<%= item.filepath1 %>" style="height:200px;"><br><br>
+
+                            <b>
+                                <%= item.brand %></b><br>
+                            <span style="font-size:25px;"><b>
+                                    <%= item.model %></b></span><br><br>
+                            <span style="color:#68A4C4;font-size:20px;"> <b>
+                                    <%= item.price %> TCC</b></span><br>
+                            <span style="color:red;font-size:15px;"> <b>
+                                    <%= item.status %></b></span>
+                            <hr>
+
+                            <span style="color:black;font-size:17px;"> 연식 :
+                                <%= item.year %> </span>
+                            <br>
+                            <span style="color:black;font-size:17px;"> 주행거리 :
+                                <%= item.distance %> km</span>
+                            <br>
+                            <span style="color:black;font-size:17px;">
+                                <%= item.engine %> </span>
+
+
+                            <div class="pricing-action">
+                                <form class="text-center" action="/info" method="POST">
+                                    <input type="hidden" name="wholenumber" value=<%=item.wholenumber %>>
+                                    <input type="hidden" name="dealnumber" value=<%=item.dealnumber %>>
+                                    <input type="hidden" name="escrownumber" value=<%=item.escrownumber %>>
+                                    <input type="hidden" name="accountaddr" id="accountaddr" value="">
+                                    <button type="submit" class="btn btn-medium btn-theme"><i class="icon-bolt"></i>MORE DETAILS</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
+
+
+
+                </div>
+
+
+                <!-- divider -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="solidline">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- divider -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="solidline">
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </footer>
+    </div>
+    <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
+    <!-- javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="javascripts/jquery.js"></script>
+    <script src="javascripts/jquery.easing.1.3.js"></script>
+    <script src="javascripts/bootstrap.min.js"></script>
+    <script src="javascripts/jquery.fancybox.pack.js"></script>
+    <script src="javascripts/jquery.fancybox-media.js"></script>
+    <script src="javascripts/google-code-prettify/prettify.js"></script>
+    <script src="javascripts/portfolio/jquery.quicksand.js"></script>
+    <script src="javascripts/portfolio/setting.js"></script>
+    <script src="javascripts/jquery.flexslider.js"></script>
+    <script src="javascripts/animate.js"></script>
+    <script src="javascripts/custom.js"></script>
+    <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/gh/icon-project/icon-sdk-js/build/icon-sdk-js.min.js"></script>
+    <script src="javascripts/utf8.js"></script>
+    <script>
+        var iconService = window['icon-sdk-js'];
+        var IconAmount = iconService.IconAmount;
+        var IconConverter = iconService.IconConverter;
+        var IconBuilder = iconService.IconBuilder;
+
+        var contractAddress = document.getElementById("contractAddress");
+        var enrollcar_enroll = document.getElementById("enrollcar_enroll");
+
+
+        window.addEventListener("ICONEX_RELAY_RESPONSE", eventHandler, false);
+        // type and payload are in event.detail
+        function eventHandler(event) {
+            var type = event.detail.type;
+            var payload = event.detail.payload;
+            switch (type) {
+                case "RESPONSE_HAS_ACCOUNT":
+
+                    break;
+
+
+                case "RESPONSE_ADDRESS":
+                    fromAddress = payload;
+                    isRegist.innerHTML = "HELLO"
+                    contractAddress.innerHTML = payload;
+                    break;
+
+                case "RESPONSE_JSON-RPC":
+                    console.log(payload.result);
+                    var HexToDecimal = parseInt(payload.result.toString(10), 16);
+document.getElementById("TCTNum").innerHTML = HexToDecimal;
+                    break;
+                case "CANCEL_JSON-RPC":
+                    break;
+
+
+
+                default:
+            }
+
+        }
+        // Register onclick event to the button and dispatch a new CustomEvent ICONEX_RELAY_REQUEST
+
+        function balanceOf() {
+            var callBuilder = new IconBuilder.CallBuilder;
+            var readOnlyData = callBuilder
+                .from("<%=contractaddr%>")
+                .to('cx905fdabf67bcf7b6de9bc164fab92840dc00aa3e')
+                .method("balanceOf")
+                .params({
+                    "owner": "<%=contractaddr%>" //car number
+                })
+                .build();
+            scoredata1 = JSON.stringify({
+                "jsonrpc": "2.0",
+                "method": "icx_call",
+                "params": readOnlyData,
+                "id": 50889
+            });
+            var parsed = JSON.parse(scoredata1);
+            console.log(parsed);
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: 'REQUEST_JSON-RPC',
+                    payload: parsed
+                }
+            }));
+        }
+
+
+
+        window.onload = function() {
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: "REQUEST_HAS_ACCOUNT"
+                }
+            }));
+            balanceOf();
+        }
+
+
+    </script>
+</body>
+
+</html>

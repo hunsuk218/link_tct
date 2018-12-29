@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>BLOCKCAR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <!-- css -->
+    <link href="stylesheets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="stylesheets/css/fancybox/jquery.fancybox.css" rel="stylesheet">
+    <link href="stylesheets/css/jcarousel.css" rel="stylesheet" />
+    <link href="stylesheets/css/flexslider.css" rel="stylesheet" />
+    <link href="stylesheets/css/style.css" rel="stylesheet" />
+
+    <!-- Theme skin -->
+    <link href="stylesheets/skins/default.css" rel="stylesheet" />
+
+
+
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- start header -->
+        <header>
+            <div class="navbar navbar-default navbar-static-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="/"><span>B</span>lockcar</a>
+                    </div>
+
+
+                    <div class="navbar-collapse collapse ">
+                        <table align="right">
+                            <tr>
+                                <td height="20"> </td>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td width="100"><a href="#"><span class="fa fa-address-card-o"></span> 계정 주소 : </a></td>
+                                <td width="330"><span id="contractAddress">
+                                        <%= contractaddr %></span></td>
+                                <td width="200" align="right"><a href="#"><span class="fa fa-gg-circle"></span> 보유 토큰 : </a>&nbsp;&nbsp;&nbsp;<span id="TCTNum"></span></td>
+                                <td width="50"><a href="#">&nbsp;TCT</a></td>
+
+                            </tr>
+                        </table>
+                    </div>
+
+
+
+                    <form action='/mypage' method="POST" name='addrForm'>
+                        <input type="hidden" id="1" name="1" value="">
+                    </form>
+
+                    <form action='/beforesellcar' method="POST" name='addrForm1'>
+                        <input type="hidden" id="2" name="2" value="">
+                    </form>
+
+
+                    <div class="navbar-collapse collapse ">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="/">Home</a></li>
+                            <li><a href="/enrollcar">차대번호 등록</a></li>
+                            <li><a href="/buycar">차량 구입</a></li>
+                            <li><a href="#" onclick="javascript:document.addrForm1.submit();">차량 판매</a></li>
+                            <li><a href="/repair">수리이력 등록</a></li>
+                            <li><a href="/searchRepairInfo">수리이력 조회</a></li>
+                            <li><a href="#" onclick="javascript:document.addrForm.submit();">나의 정보</a></li>
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </header>
+        <!-- end header -->
+        <section id="inner-headline">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="breadcrumb">
+                            <li><a href="#"><i class="fa fa-home"></i></a><i class="icon-angle-right"></i></li>
+                            <li class="active">ENROLLCAR</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="content">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h4>가지고 계신 차량의 차대번호를 입력해주세요.</h4>
+
+                        <div id="sendmessage">Your message has been sent. Thank you!</div>
+                        <div id="errormessage"></div>
+
+
+
+
+                        <script>
+                            function formChk1(){
+                                    if(document.joinForm2.wholenumber.value.length != 17){
+				                    alert("차대번호는 17자리로 입력해주세요!!");
+				                    	document.joinForm2.wholenumber.focus();
+			                        }   
+			                        else if(document.joinForm2.carnum.value.length != 7)
+		                        	{
+                                    alert("차량번호는 7자리로 입력해주세요!!");
+                                    document.joinForm2.carnum.focus();
+                                    }
+                                    else
+                                    {
+                                           if (confirm("차대번호등록 하실래요?")) {
+                                            setCar();
+                                            alert("차대번호등록 완료");
+                                            document.joinForm2.submit(); 
+                                        
+                                            return true;
+                                           } else{
+                                               alert("취소하셨습니다");
+                                           }
+                                    }
+                                }
+                                </script>
+
+
+                        <form action="/enrollcar/enroll" method="post" onSubmit="formChk1(); return false" name="joinForm2" class="contactForm">
+                            <div class="form-group">
+                                차대번호(변경불가)<input type="text" id="car_registed_string" class="form-control" name="wholenumber" data-rule="required" placeholder="KMHEM42APXA000000">
+                            </div>
+                            <div class="form-group">
+                                차량번호(변경가능)<input type="text" id="car_registed_string2" class="form-control" name="carnum" data-rule="required" placeholder="01가1111">
+                            </div>
+                            <input type="hidden" id="accountaddr" name="contractaddr" value="<%= contractaddr %>">
+
+
+
+                            <script src="//code.jquery.com/jquery.min.js"></script>
+                            <script src='//rawgit.com/tuupola/jquery_chained/master/jquery.chained.min.js'></script>
+                            <script>
+                                $("#maker").chained("#region");
+                                                $("#model").chained("#maker");
+                                                $("#detail").chained("#model");
+                                            </script>
+
+
+
+                            <div class="text-center"><button TYPE="SUBMIT" class="btn btn-theme">등록</button>&nbsp;&nbsp;&nbsp;
+                                <button type="reset" class="btn btn-danger">취소</button></div>
+                        </form>
+           
+
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="widget">
+                            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </footer>
+    </div>
+    <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
+    <!-- javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="javascripts/jquery.js"></script>
+    <script src="javascripts/jquery.easing.1.3.js"></script>
+    <script src="javascripts/bootstrap.min.js"></script>
+    <script src="javascripts/jquery.fancybox.pack.js"></script>
+    <script src="javascripts/jquery.fancybox-media.js"></script>
+    <script src="javascripts/google-code-prettify/prettify.js"></script>
+    <script src="javascripts/portfolio/jquery.quicksand.js"></script>
+    <script src="javascripts/portfolio/setting.js"></script>
+    <script src="javascripts/jquery.flexslider.js"></script>
+    <script src="javascripts/animate.js"></script>
+    <script src="javascripts/custom.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/icon-project/icon-sdk-js/build/icon-sdk-js.min.js"></script>
+    <script src="javascripts/utf8.js"></script>
+    <script src="contactform/contactform.js"></script>
+    <script>
+        var iconService = window['icon-sdk-js'];
+        var IconAmount = iconService.IconAmount;
+        var IconConverter = iconService.IconConverter;
+        var IconBuilder = iconService.IconBuilder;
+
+        var contractAddress = document.getElementById("contractAddress");
+        var enrollcar_enroll = document.getElementById("enrollcar_enroll");
+
+
+        window.addEventListener("ICONEX_RELAY_RESPONSE", eventHandler, false);
+        // type and payload are in event.detail
+        function eventHandler(event) {
+            var type = event.detail.type;
+            var payload = event.detail.payload;
+            switch (type) {
+                case "RESPONSE_HAS_ACCOUNT":
+
+                    break;
+
+
+                case "RESPONSE_ADDRESS":
+                    fromAddress = payload;
+                    isRegist.innerHTML = "HELLO"
+                    contractAddress.innerHTML = payload;
+                    break;
+
+                case "RESPONSE_JSON-RPC":
+                    console.log(payload.result);
+                    var HexToDecimal = parseInt(payload.result.toString(10), 16);
+document.getElementById("TCTNum").innerHTML = HexToDecimal;
+                    break;
+                case "CANCEL_JSON-RPC":
+                    break;
+
+
+
+                default:
+            }
+
+        }
+        // Register onclick event to the button and dispatch a new CustomEvent ICONEX_RELAY_REQUEST
+
+        function setCar() {
+            var callTransactionBuilder = new IconBuilder.CallTransactionBuilder;
+            var callTransactionData = callTransactionBuilder
+                .from("<%=contractaddr%>")
+                .to("cx1bb212f4567f43ddac4cf24a9ed99f71e9ca36a5")
+                .nid(IconConverter.toBigNumber(3))
+                .timestamp((new Date()).getTime() * 1000)
+                .stepLimit(IconConverter.toBigNumber(100000000))
+                .version(IconConverter.toBigNumber(3))
+                .method('setCar')
+                .params({
+                    "_carNumber": document.getElementById("car_registed_string").value
+                })
+                .build();
+
+            scoredata = JSON.stringify({
+                "jsonrpc": "2.0",
+                "method": "icx_sendTransaction",
+                "params": IconConverter.toRawTransaction(callTransactionData),
+                "id": 50889
+            });
+            var parsed = JSON.parse(scoredata);
+            console.log(parsed);
+
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: 'REQUEST_JSON-RPC',
+                    payload: parsed
+                }
+            }));
+        }
+
+        function balanceOf() {
+            var callBuilder = new IconBuilder.CallBuilder;
+            var readOnlyData = callBuilder
+                .from("<%=contractaddr%>")
+                .to('cx905fdabf67bcf7b6de9bc164fab92840dc00aa3e')
+                .method("balanceOf")
+                .params({
+                    "owner": "<%=contractaddr%>" //car number
+                })
+                .build();
+            scoredata1 = JSON.stringify({
+                "jsonrpc": "2.0",
+                "method": "icx_call",
+                "params": readOnlyData,
+                "id": 50889
+            });
+            var parsed = JSON.parse(scoredata1);
+            console.log(parsed);
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: 'REQUEST_JSON-RPC',
+                    payload: parsed
+                }
+            }));
+        }
+
+        window.onload = function() {
+            window.dispatchEvent(new CustomEvent('ICONEX_RELAY_REQUEST', {
+                detail: {
+                    type: "REQUEST_HAS_ACCOUNT"
+                }
+            }));
+            balanceOf();
+        }
+
+
+
+    </script>
+
+</body>
+
+</html>

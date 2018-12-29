@@ -82,11 +82,6 @@ class TCTDapp(IconScoreBase):
         self._repair_data[_carNumber][count] = repairDataStr
         Logger.debug(f'set repair data!! good!')
     
-
-    #@external(readonly=True)
-    #def getRepairInfo(self, _carNumber:str, _carCount : int) -> str:
-        #return self._repair_data[_carNumber][_carCount]
-
     @external(readonly=True)
     def getRepairInfo(self, _carNumber:str, _carCount : int) -> dict: 
         return json_loads(self._repair_data[_carNumber][_carCount])
@@ -95,7 +90,6 @@ class TCTDapp(IconScoreBase):
     def getRepairInfoStr(self, _carNumber:str, _carCount : int) -> str: 
         return self._repair_data[_carNumber][_carCount]
     
-
     @external
     def ownerChange(self, _from : Address, _to : Address, _carNumber : str):
         if self.msg.sender != self._escrow_addr.get():
